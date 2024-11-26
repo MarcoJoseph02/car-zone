@@ -6,7 +6,6 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -18,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginated();
+        return UserResource::collection(User::paginate(20)) ;
     }
 
 
@@ -30,7 +29,7 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $data["password"] = Hash::make($request->password);
         $user = User::create($data);
         return  new UserResource($user);
@@ -57,7 +56,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $data= $request->validate();
+        $data= $request->validated();
         $user->update($data);
         return  new UserResource($user);
     }

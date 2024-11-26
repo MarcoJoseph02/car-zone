@@ -18,9 +18,9 @@ class CreateUserRequest extends FormRequest
         return [            // Just validate
             'fname' => ["required" , "min:2"],
             'lname'  => ["required" , "min:2"],
-            'email'  => ["required" , "min:2"],
+            'email'  => ["required" , "min:2" , "unique:users,email" ],
             'password'  => ["required" , "min:2"],
-            'phone_no'  => ["required" , "min:2"],
+            'phone_no'  => ["required" , "min:2" , "unique:users,phone_no"],
             'address'  => ["required" , "min:2"],
         ];
     }
