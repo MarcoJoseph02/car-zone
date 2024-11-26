@@ -15,7 +15,7 @@ class CreateBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            
+            'fname' => ["required" , "min:2"],
         ];
     }
 }

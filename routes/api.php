@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +33,4 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api')
 
 
 Route::resource('users', UserController::class);
+Route::resource('brand', BrandController::class);
