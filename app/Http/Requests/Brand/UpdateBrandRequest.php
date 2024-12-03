@@ -17,6 +17,7 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'name' => ["required" , "min:2"],
+            'image' =>["nullable" ,"image","mimes:jpeg,png,jpg,gif,svg","max:2048"] ,
         ];
     }
 }

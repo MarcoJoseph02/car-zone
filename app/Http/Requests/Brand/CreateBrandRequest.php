@@ -15,7 +15,9 @@ class CreateBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            'fname' => ["required" , "min:2"],
+            'name' => ["required" , "min:2"],
+            'image' =>["nullable" ,"image","mimes:jpeg,png,jpg,gif,svg","max:2048"] ,
+
         ];
     }
 }
