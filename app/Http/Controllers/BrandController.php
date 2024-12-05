@@ -17,7 +17,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        return Brand::paginated();
+        return BrandResource::collection(Brand::paginated(20));
     }
 
     
