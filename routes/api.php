@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +40,5 @@ Route::resource('users', UserController::class);
 Route::resource('brand', BrandController::class);
 Route::resource('events', EventController::class);
 Route::resource('cars', EventController::class);
+Route::resource('category', CategoryController::class);
+Route::resource('order', OrderController::class);
