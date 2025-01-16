@@ -1,0 +1,120 @@
+@extends('layouts.admin_layout')
+@push('title')
+    {{ @$page_title }}
+@endpush
+@section('title', @$page_title)
+@section('content')
+    <div class="row">
+
+        @if(!$rows->isEmpty())
+            <div class="card mt-3 pt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ trans('schools.List_schools') }}</h5>
+                    <div>
+                        <a href="{{ route('admin.schools.get.create') }}"
+                           class="btn btn-success">{{ trans('schools.Create') }}</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0 w-99">
+                            <thead>
+                            <tr>
+                                <th class="text-center">{{ trans('schools.name english') }}</th>
+                                <th class="text-center">{{ trans('schools.name arabic') }}</th>
+                                <th class="text-center">{{ trans('schools.Actions') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($rows as $row)
+                                <tr class="text-center">
+                                    <td>{{ $row->translate('en')->name ?? ''}}</td>
+                                    <td>{{ $row->translate('ar')->name ?? '' }}</td>
+                                    <td class="align-middle text-center pt-5">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 col-xs-4 form-group">
+                                                <a class="btn btn-xs btn-primary"
+                                                   href="{{  route('admin.schools.get.view',$row->id) }}"
+                                                   data-ps-toggle="tooltip"
+                                                   data-ps-placement="top" title="{{ trans('schools.view') }}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4 form-group">
+                                                <a class="btn btn-xs btn-info"
+                                                   href="{{  route('admin.schools.get.edit',$row->id) }}"
+                                                   data-ps-toggle="tooltip"
+                                                   data-ps-placement="top" title="{{ trans('schools.edit') }}">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4 form-group">
+                                                <div class="form-group" style="align:center">
+                                                    <a
+                                                            class="btn btn-xs btn-danger"
+                                                            href="#"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#delete_course_{{$row->id}}"
+                                                            title="{{ trans('app.delete') }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                                <div
+                                                        class="modal fade"
+                                                        id="delete_course_{{$row->id}}"
+                                                        tabindex="-1"
+                                                        role="dialog"
+                                                        aria-labelledby="myModalLabel"
+                                                        aria-hidden="true"
+                                                >
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <form method="POST" class="d-inline"
+                                                                      action="{{route('admin.schools.delete' , $row->id)}}">
+                                                                    {{ csrf_field() }}
+                                                                    {{ method_field('DELETE') }}
+                                                                    <div class="form-group" style="">
+                                                                        <label>{{trans('app.Are you sure you want to delete this item?')}}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-group" style="margin-top: 20px">
+                                                                        <button type="submit"
+                                                                                class="btn btn-primary">{{ trans('app.confirm') }}</button>
+                                                                        <button type="button" class="btn btn-danger"
+                                                                                data-bs-dismiss="modal">{{trans('app.cancel')}}</button>
+
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        <div class="pull-right">
+                            {{ $rows->links() }}
+                        </div>
+                        @else
+                            <div class="card mt-3 pt-3">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">{{ trans('schools.List_schools') }}</h5>
+                                    <div>
+                                        <a href="{{ route('admin.schools.get.create') }}"
+                                           class="btn btn-success">{{ trans('schools.Create') }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            @include('partials.noData')
+                        @endif
+                    </div>
+                </div>
+            </div>
+    </div>
+@endsection
