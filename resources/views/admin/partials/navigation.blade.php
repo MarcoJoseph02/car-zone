@@ -42,7 +42,7 @@
 
             <li class="nav-item ">
                 <a class="nav-link {{getActiveElementByRoute(route:'admin.branch.index')}}"
-                   href="{{ route('admin.brand.index') }}">
+                   href="{{ route('admin.branch.index') }}">
                     <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
                         <i class="fa fa-users text-primary text-sm opacity-10"></i>
                     </div>
@@ -57,6 +57,16 @@
                         <i class="fa fa-users text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Suppliers</span>
+                </a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link {{getActiveElementByRoute(route:'admin.car.index')}}"
+                   href="{{ route('admin.car.index') }}">
+                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                        <i class="fa fa-users text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Cars</span>
                 </a>
             </li>
         
