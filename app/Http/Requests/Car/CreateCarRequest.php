@@ -15,9 +15,10 @@ class CreateCarRequest extends FormRequest
     public function rules()
     {
         return [
-            'supplier_id'=>['required',"min:1"],
-            'category_id'=>['required,"min:1'],
+            'supplier_id'=>['required'],
+            'category_id'=>['required','min:1'],
             'brand_id'=>['required',"min:1"],
+            'branch_id'=>['required',"min:1"],
             'model'=>['required'],
             'year'=>['required'],
             'price'=>['required',"min:1"],

@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Car\CreateCarRequest;
 use App\Http\Requests\Car\UpdateCarRequest;
 use App\Http\Resources\CarResource;
+use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\Car;
+use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
+
+    private $filters = [];
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +24,18 @@ class CarController extends Controller
      */
     public function index()
     {
-        return CarResource::collection(Car::paginated(20));
+
+        $this->setFilters();
+        $data['filters'] = $this->filters;
+        $data['rows'] = CarResource::collection(Car::paginate(20));
+        $data['page_title'] = "Cars";
+        $data['breadcrumb'] = '';
+        return view("admin.car.index" , $data);
+    }
+
+    public function create(){
+        return view("admin.car.create" , $this->getLookup() );
+
     }
 
     
@@ -32,7 +50,14 @@ class CarController extends Controller
        
         $data = $request->validated();
         $car = Car::create($data);
-        return new CarResource($car); 
+        return redirect()->route("admin.car.index");
+    }
+
+
+    public function edit(Car $car){
+        $data["row"] = $car;
+        $data = array_merge($data , $this->getLookup());
+        return view("admin.car.edit" , $data );
     }
 
     /**
@@ -59,7 +84,7 @@ class CarController extends Controller
     {
         $data = $request->validated();
         $car->update($data);
-        return new CarResource($car);
+        return redirect()->route("admin.brand.index");
     }
 
     /**
@@ -71,6 +96,30 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         $car->delete();
-        return response()->Json(null, 200);
+        flash()->success("Deleted Succefully");
+        return redirect()->back();    
+    }
+
+    public function setFilters() {
+        $this->filters[] = [
+            'name' => 'name',
+            'type' => 'input',
+            'trans' => true,
+            'value' => request()->get('name' ),
+            'attributes' => [
+                'class'=>'form-control',
+                'label'=>"Type",
+                'placeholder'=>"name",
+            ]
+        ];
+    }
+
+    private function getLookup(){
+        return [
+            "suppliers" => Supplier::pluck('lname', 'id'),
+            "branches" => Branch::pluck('name', 'id'),
+            "brands" => Brand::pluck('name', 'id'),
+            "categories" => Category::pluck('type', 'id'),
+        ];
     }
 }

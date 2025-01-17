@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('supplier_id')->constrained("suppliers");
             $table->foreignId('category_id')->constrained("categories");
             $table->foreignId('brand_id')->constrained("brands");
+            $table->foreignId('branch_id')->constrained("branches");
             $table->string('model');
             $table->integer('year');
             $table->float('price');
