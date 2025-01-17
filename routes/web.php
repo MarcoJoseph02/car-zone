@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +23,7 @@ Route::get('/', function () {
 
 Route::get('/about', function () {
     return view('about');
-})->name("about");
+})->name("admin.dashboard");
 
 Route::get('/event', function () {
     return view('event');
@@ -34,3 +38,10 @@ Route::get('/store', function () {
 })->name("store");
 
 
+Route::group(
+    [ "as" => "admin."] , function(){
+        Route::resource("/category" , CategoryController::class);
+        Route::resource("/brand" , BrandController::class);
+        Route::resource("/branch" , BranchController::class);
+        Route::resource("/supplier" , SupplierController::class);
+});

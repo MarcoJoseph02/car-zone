@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    private $filters = [];
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +19,17 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return  CategoryResource::collection(Category::paginated(20));
+        $this->setFilters();
+        $data['filters'] = $this->filters;
+        $data['rows'] = CategoryResource::collection(Category::paginate(20));
+        $data['page_title'] = "Category";
+        $data['breadcrumb'] = '';
+        return view("admin.category.index" , $data);
+    }
+
+    public function create(){
+        return view("admin.category.create" );
+
     }
 
    
@@ -30,9 +42,13 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->validate();
         $category = Category::create($data);
-        return new CategoryResource($category);
+        return redirect()->route("admin.category.index");
+    }
+
+    public function edit(Category $category){
+        return view("admin.category.edit" , ["row" => $category] );
     }
 
     /**
@@ -56,9 +72,9 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $data = $request->validated();
+        $data = $request->validate();
         $category->update($data);
-        return new CategoryResource($category);
+        return redirect()->route("admin.category.index");
     }
 
     /**
@@ -70,6 +86,21 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->Json(null,200);
+        flash()->success("Deleted Succefully");
+        return redirect()->back();
+    }
+
+    public function setFilters() {
+        $this->filters[] = [
+            'name' => 'type',
+            'type' => 'input',
+            'trans' => true,
+            'value' => request()->get('type' ),
+            'attributes' => [
+                'class'=>'form-control',
+                'label'=>"Type",
+                'placeholder'=>"Type",
+            ]
+        ];
     }
 }

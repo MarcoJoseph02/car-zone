@@ -10,7 +10,10 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "tymon/jwt-auth": "^2.1"
+        "tymon/jwt-auth": "^2.1",
+        "laravelcollective/html": "^6.1",
+        "laracasts/flash": "^3.0",
+        "mcamara/laravel-localization": "^2.0.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -27,7 +30,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },"files": [
-            "Helpers/Functions.php"
+            "app/Helpers/Functions.php"
         ]
     },
     "autoload-dev": {

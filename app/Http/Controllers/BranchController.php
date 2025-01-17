@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BranchResource;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
+    private $filters = [];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,13 @@ class BranchController extends Controller
      */
     public function index()
     {
-        //
+        
+        $this->setFilters();
+        $data['filters'] = $this->filters;
+        $data['rows'] = BranchResource::collection(Branch::paginate(20));
+        $data['page_title'] = "branches";
+        $data['breadcrumb'] = '';
+        return view("admin.branches.index" , $data);
     }
 
     /**
@@ -24,7 +33,7 @@ class BranchController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.branches.create" );
     }
 
     /**
@@ -35,7 +44,10 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $data = $request->all();
+        $category = Branch::create($data);
+        return redirect()->route("admin.branch.index");
     }
 
     /**
@@ -46,7 +58,7 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
-        //
+        
     }
 
     /**
@@ -57,7 +69,8 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch)
     {
-        //
+        return view("admin.branches.edit" , ["row" => $branch] );
+
     }
 
     /**
@@ -69,7 +82,9 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
-        //
+        $data = $request->all();
+        $branch->update($data);
+        return redirect()->route("admin.branch.index");
     }
 
     /**
@@ -80,6 +95,22 @@ class BranchController extends Controller
      */
     public function destroy(Branch $branch)
     {
-        //
+        $branch -> delete();
+        flash()->success("Deleted Succefully");
+        return redirect()->back();   
+    }
+
+    public function setFilters() {
+        $this->filters[] = [
+            'name' => 'phone_no',
+            'type' => 'input',
+            'trans' => false,
+            'value' => request()->get('phone_no' ),
+            'attributes' => [
+                'class'=>'form-control',
+                'label'=>"Type",
+                'placeholder'=>"name",
+            ]
+        ];
     }
 }

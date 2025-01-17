@@ -21,133 +21,45 @@
                 </a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.users.get.index')}}"
-                   href="{{ route('admin.users.get.index') }}">
+                <a class="nav-link {{getActiveElementByRoute(route:'admin.category.index')}}"
+                   href="{{ route('admin.category.index') }}">
                     <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
                         <i class="fa fa-users text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">{{ trans('navigation.users') }}</span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.courses.get.index')}}"
-                   href="{{ route('admin.courses.get.index') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-chalkboard text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.Courses') }} </span>
+                    <span class="nav-link-text ms-1">Categories</span>
                 </a>
             </li>
 
+            <li class="nav-item ">
+                <a class="nav-link {{getActiveElementByRoute(route:'admin.brand.index')}}"
+                   href="{{ route('admin.brand.index') }}">
+                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                        <i class="fa fa-users text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Brands</span>
+                </a>
+            </li>
 
             <li class="nav-item ">
-                <a class="nav-link"
-                   aria-controls="paymentExample" role="button" data-bs-toggle="collapse"
-                   aria-expanded="false" href="#paymentExample">
+                <a class="nav-link {{getActiveElementByRoute(route:'admin.branch.index')}}"
+                   href="{{ route('admin.brand.index') }}">
                     <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-cart text-primary text-sm opacity-10"></i>
+                        <i class="fa fa-users text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1"> {{ trans('payment_transaction.payments')}} <b class="caret"></b></span>
+                    <span class="nav-link-text ms-1">Branches</span>
                 </a>
-                <div class="collapse " id="paymentExample">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item ">
-                            <a class="nav-link {{getActiveElementByRoute(route:'admin.paymentReport.success.get.index')}}"
-                               href="{{ route('admin.paymentReport.success.get.index') }}">
-                                <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                                    <i class="ni ni-credit-card text-primary text-sm opacity-10"></i>
-                                </div>
-                                <span class="nav-link-text ms-1"> {{ trans('payment_transaction.success_transactions') }} </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{getActiveElementByRoute(route:'admin.paymentReport.failed_transactions')}}" href={{ route('admin.paymentReport.failed_transactions') }}>
-                                <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                                    <i class="fa fa-cc-visa text-primary text-sm opacity-10"></i>
-                                </div>
-                                <span class="nav-link-text ms-1"> {{ trans('payment_transaction.failed_transactions') }} </span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link {{getActiveElementByRoute(route:'admin.paymentReport.getPendTransactions')}}"
-                               href="{{ route('admin.paymentReport.getPendTransactions') }}">
-                                <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                                    <i class="ni ni-money-coins text-primary text-sm opacity-10"></i>
-                                </div>
-                                <span class="nav-link-text ms-1"> {{ trans('payment_transaction.pending_payments_transactions') }} </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </li>
 
-
             <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.promoCodes.get.index')}}"
-                   href="{{ route('admin.promoCodes.get.index') }}">
+                <a class="nav-link {{getActiveElementByRoute(route:'admin.supplier.index')}}"
+                   href="{{ route('admin.supplier.index') }}">
                     <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="fa fa-dollar-sign text-primary text-sm opacity-10"></i>
+                        <i class="fa fa-users text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">{{ trans('navigation.Promo Codes') }} </span>
+                    <span class="nav-link-text ms-1">Suppliers</span>
                 </a>
             </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.contact.get.index')}}"
-                   href="{{ route('admin.contact.get.index') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-mobile-button text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.Contact') }} </span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.schools.get.index')}}"
-                   href="{{ route('admin.schools.get.index') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-school text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.schools') }} </span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.downloads.get.index')}}"
-                   href="{{ route('admin.downloads.get.index') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-mobile-button text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.downloads') }} </span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.testimonials.get.index')}}"
-                   href="{{ route('admin.testimonials.get.index') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-mobile-button text-primary text-sm opacity-10"></i>
-                    </div>
-
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.testimonials') }} </span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.configs.get.edit')}}"
-                   href="{{ route('admin.configs.get.edit') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-mobile-button text-primary text-sm opacity-10"></i>
-                    </div>
-
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.configs') }} </span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link {{getActiveElementByRoute(route:'admin.news-letter.getIndexNewsLetterEmail')}}"
-                   href="{{ route('admin.news-letter.getIndexNewsLetterEmail') }}">
-                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-mobile-button text-primary text-sm opacity-10"></i>
-                    </div>
-
-                    <span class="nav-link-text ms-1"> {{ trans('navigation.news_letter_email') }} </span>
-                </a>
-            </li>
+        
         </ul>
     </div>
     <div class="sidenav-footer mx-3 my-3">

@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="clear fix">
             <p class="h3 text-center">
-                {{ trans('app.There is no data')  }}
+                No Data
             </p>
         </div>
     </div>

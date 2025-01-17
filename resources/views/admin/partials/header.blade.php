@@ -17,7 +17,7 @@
                         <i class="fa fa-user me-sm-1"></i>
                         <span class="d-sm-inline d-none">{{ auth()->user()?->name }}</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end px-2 me-sm-n4" aria-labelledby="dropdownMenuButton"
+                    {{-- <ul class="dropdown-menu dropdown-menu-end px-2 me-sm-n4" aria-labelledby="dropdownMenuButton"
                         style="padding-left: 1rem !important;">
                         <li>
                             <a href="{{ route('admin.profile.get.edit') }}" class="nav-link" style="display: flex; align-items: center;">
@@ -32,7 +32,7 @@
                                 <span class="text-center dropdown-text-color fix" style="padding-left: 5px;">{{ __('header.Logout') }}</span>
                             </a>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </li>
                 <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
