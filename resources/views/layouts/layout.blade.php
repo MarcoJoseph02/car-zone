@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Car Zone</title>
     @yield('css')
-   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
-   <link rel="stylesheet" href="{{asset('assets/css/Responsive.css')}}" />
-   {{-- <link rel="stylesheet" href="{{asset('assets/css/event.css')}}" />
-   <link rel="stylesheet" href="{{asset('assets/css/location.css')}}" />
-   <link rel="stylesheet" href="{{asset('assets/css/store.css')}}" /> --}}
+   <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}" />
+   <link rel="stylesheet" href="{{asset('admin/assets/css/Responsive.css')}}" />
+   {{-- <link rel="stylesheet" href="{{asset('admin/assets/css/event.css')}}" />
+   <link rel="stylesheet" href="{{asset('admin/assets/css/location.css')}}" />
+   <link rel="stylesheet" href="{{asset('admin/assets/css/store.css')}}" /> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
 </head>
 

@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
+
+    private $filters = [];
+
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +20,19 @@ class BrandController extends Controller
      */
     public function index()
     {
-        return BrandResource::collection(Brand::paginated(20));
+        $this->setFilters();
+        $data['filters'] = $this->filters;
+        $data['rows'] = BrandResource::collection(Brand::paginate(20));
+        $data['page_title'] = "Brands";
+        $data['breadcrumb'] = '';
+        return view("admin.brand.index" , $data);
     }
+
+    public function create(){
+        return view("admin.brand.create" );
+
+    }
+
 
     
     /**
@@ -29,9 +43,14 @@ class BrandController extends Controller
      */
     public function store(CreateBrandRequest $request)
     {
-        $data = $request->validate();
-        $brand = Brand::create($data);
-        return new BrandResource($brand);
+        $data = $request->validated();
+        $category = Brand::create($data);
+        return redirect()->route("admin.brand.index");
+    }
+
+
+    public function edit(Brand $brand){
+        return view("admin.brand.edit" , ["row" => $brand] );
     }
 
     /**
@@ -63,8 +82,9 @@ class BrandController extends Controller
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
         $data = $request->validated();
-        $brand ->update($data);
-        return new BrandResource($brand);
+        $brand->update($data);
+        return redirect()->route("admin.brand.index");
+    
     }
 
     /**
@@ -76,6 +96,21 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $brand -> delete();
-        return response()->json(null , 200);
+        flash()->success("Deleted Succefully");
+        return redirect()->back();    
+    }
+
+    public function setFilters() {
+        $this->filters[] = [
+            'name' => 'name',
+            'type' => 'input',
+            'trans' => true,
+            'value' => request()->get('name' ),
+            'attributes' => [
+                'class'=>'form-control',
+                'label'=>"Type",
+                'placeholder'=>"name",
+            ]
+        ];
     }
 }

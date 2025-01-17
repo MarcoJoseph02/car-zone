@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SupplierResource;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    private $filters = [];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,12 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $this->setFilters();
+        $data['filters'] = $this->filters;
+        $data['rows'] = SupplierResource::collection(Supplier::paginate(20));
+        $data['page_title'] = "Suppliers";
+        $data['breadcrumb'] = '';
+        return view("admin.supplier.index" , $data);
     }
 
     /**
@@ -24,7 +32,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.supplier.create" );
+
     }
 
     /**
@@ -35,7 +44,9 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $category = Supplier::create($data);
+        return redirect()->route("admin.supplier.index");
     }
 
     /**
@@ -57,7 +68,8 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //
+        return view("admin.supplier.edit" , ["row" => $supplier] );
+
     }
 
     /**
@@ -69,7 +81,9 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $data = $request->all();
+        $supplier->update($data);
+        return redirect()->route("admin.supplier.index");
     }
 
     /**
@@ -80,6 +94,22 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier -> delete();
+        flash()->success("Deleted Succefully");
+        return redirect()->back();   
+    }
+
+    public function setFilters() {
+        $this->filters[] = [
+            'name' => 'lname',
+            'type' => 'input',
+            'trans' => true,
+            'value' => request()->get('name' ),
+            'attributes' => [
+                'class'=>'form-control',
+                'label'=>"Type",
+                'placeholder'=>"name",
+            ]
+        ];
     }
 }
