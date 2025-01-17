@@ -1,5 +1,7 @@
 @extends('layouts.layout')
 @section('content')
+<div class="main">
+
         <div class="content">
             <div class="about-text">
                 <h2>about <span> us</span></h2>
@@ -64,6 +66,6 @@
             </div>
         </section>
 
-
+</div>
         
 @endsection

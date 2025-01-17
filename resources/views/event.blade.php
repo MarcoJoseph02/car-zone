@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('css')
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/event.css') }}">
 @endsection
 @section('content')
     <!-- navbar -->
