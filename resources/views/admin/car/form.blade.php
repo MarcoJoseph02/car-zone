@@ -6,8 +6,8 @@
         $description_attributes = array_merge($attributes , ['label'=>"description",'placeholder'=> "description"]);
         $supplier_attributes = array_merge($attributes , ['label'=>"Supplier",'placeholder'=> "Supplier"]);
         $branch_attributes = array_merge($attributes , ['label'=>"Branch",'placeholder'=> "Branch"]);
-        $brand_attributes = array_merge($attributes , ['label'=>"Supplier",'placeholder'=> "Supplier"]);
-        $category_attributes = array_merge($attributes , ['label'=>"Supplier",'placeholder'=> "Supplier"]);
+        $brand_attributes = array_merge($attributes , ['label'=>"Brand",'placeholder'=> "Brand"]);
+        $category_attributes = array_merge($attributes , ['label'=>"Category",'placeholder'=> "Category"]);
     @endphp
     @include('form.input',['type'=>'text','name'=> 'model','value'=> $row->model ?? null,'attributes'=>$model_attributes])
     @include('form.input',['type'=>'text','name'=> 'year','value'=> $row->year ?? null,'attributes'=>$year_attributes])
