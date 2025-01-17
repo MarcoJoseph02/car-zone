@@ -108,7 +108,6 @@
     <button id="btnScroll"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
 
     <!-- about us -->
-    <div class="main">
        @yield('content')
 
         <footer>
