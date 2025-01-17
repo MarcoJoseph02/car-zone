@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Car Zone</title>
     @yield('css')
-   <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}" />
-   <link rel="stylesheet" href="{{asset('admin/assets/css/Responsive.css')}}" />
+   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
+   <link rel="stylesheet" href="{{asset('assets/css/Responsive.css')}}" />
    {{-- <link rel="stylesheet" href="{{asset('admin/assets/css/event.css')}}" />
    <link rel="stylesheet" href="{{asset('admin/assets/css/location.css')}}" />
    <link rel="stylesheet" href="{{asset('admin/assets/css/store.css')}}" /> --}}
@@ -148,7 +148,7 @@
 
 
 
-    <script src="{{asset('assetes/JS/script.js')}}"></script>
+    <script src="{{asset('assets/JS/script.js')}}"></script>
 </body>
 
 </html>
