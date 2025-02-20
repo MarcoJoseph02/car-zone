@@ -68,7 +68,7 @@
                 @if(LaravelLocalization::getCurrentLocale() === 'en')
 
                     made with <i class="text-danger fa fa-heart"></i> by
-                    <a href="" class="font-weight-bold" target="_blank">{{__('app.app name') }}</a>
+                    <a href="" class="font-weight-bold" target="_blank">CarZone</a>
                     ©
                     <script>
                         document.write(new Date().getFullYear())
@@ -77,7 +77,7 @@
                 @else
 
                     تم التطوير بواسطه
-                    <a href="" class="font-weight-bold" target="_blank">{{__('app.app name') }}</a>
+                    <a href="" class="font-weight-bold" target="_blank">CarZone</a>
                     ©
                     <script>
                         document.write(new Date().getFullYear())

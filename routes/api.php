@@ -42,3 +42,9 @@ Route::resource('events', EventController::class);
 Route::resource('cars', EventController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('order', OrderController::class);
+
+//pass
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);

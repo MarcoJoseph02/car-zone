@@ -1,4 +1,4 @@
-/* .events {
+.events {
     padding: 30px;
     background-color: #f9f9f9;
     text-align: center;
@@ -50,7 +50,7 @@
 
 .learn-more:hover {
     background-color: #ff2a1a;
-} */
+} 
  footer{
     position: absolute;
     bottom:0;

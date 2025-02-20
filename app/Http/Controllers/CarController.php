@@ -34,8 +34,9 @@ class CarController extends Controller
     }
 
     public function create(){
-        return view("admin.car.create" , $this->getLookup() );
-
+        $data["row"] = null;
+        $data = array_merge($data , $this->getLookup());
+        return view("admin.car.create" , $data );
     }
 
     

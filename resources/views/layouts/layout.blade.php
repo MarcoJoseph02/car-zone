@@ -127,8 +127,9 @@
                 </div>
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
-                    <p>Email: support@carzone.com</p>
-                    <p>Phone: 01557775652</p>
+                    <span>Email: <a href="mailto:support@carzone.com" style="text-decoration: none; color: inherit;">support@carzone.com</a>
+</span>
+                    <span>Phone: <a href="https://wa.me/01557775652" target="_blank" style="text-decoration: none; color: inherit;">01557775652</a></span>
                     <p>Address: 23 Hamdi Shousha Street, Al-Marg</p>
                 </div>
                 <div class="footer-social">
@@ -143,6 +144,7 @@
             </div>
         </footer>
 
+@yield('endFooter')
     </div>
 
 

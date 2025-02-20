@@ -22,6 +22,7 @@ class CarFactory extends Factory
             'supplier_id' => \App\Models\Supplier::inRandomOrder()->first()->id ?? \App\Models\Supplier::factory()->create()->id,
             'category_id' => \App\Models\Category::inRandomOrder()->first()->id ?? \App\Models\Category::factory()->create()->id,
             'brand_id' => \App\Models\Brand::inRandomOrder()->first()->id ?? \App\Models\Brand::factory()->create()->id,
+            'branch_id' => \App\Models\Branch::inRandomOrder()->first()->id ?? \App\Models\Branch::factory()->create()->id,
             'model'=>fake()->word(),
             'year'=>fake()->year(),
             'price'=>fake()->randomFloat(2,2000,21474),

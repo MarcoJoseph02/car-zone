@@ -4,6 +4,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,3 +48,5 @@ Route::group(
         Route::resource("/supplier" , SupplierController::class);
         Route::resource("/car" , CarController::class);
 });
+
+Route::get('/email', [JobController::class, 'sendEmail'])->name('sendEmail');
