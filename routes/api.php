@@ -4,11 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReminderController;
+use Illuminate\Contracts\Queue\Job;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,3 +45,15 @@ Route::resource('events', EventController::class);
 Route::resource('cars', EventController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('order', OrderController::class);
+
+//pass
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::get('/email', [JobController::class, 'sendEmail']);
+
+
+
+Route::post('/cars/{carId}/update-maintenance', [ReminderController::class, 'updateMaintenance']);
+

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->constrained("brands");
             $table->foreignId('branch_id')->constrained("branches");
             $table->string('model');
+            // $table->string('image')->nullable();
             $table->integer('year');
             $table->float('price');
             $table->text('description');
