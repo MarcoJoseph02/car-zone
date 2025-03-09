@@ -8,7 +8,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Jobs\Reminder;
+use Illuminate\Support\Carbon;
+use App\Models\Reminder as ReminderModel;
+use App\Jobs\Mail;
+use App\Mail\ReminderEmail;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 
 class CheckRemindersJob implements ShouldQueue
 {
@@ -22,7 +26,7 @@ class CheckRemindersJob implements ShouldQueue
      */
     public function handle()
     {
-        $reminders = Reminder::where(function ($query) {
+        $reminders = ReminderModel::where(function ($query) {//ReminderEmail
             $query->where('reminder_type', 'time')
                   ->where('next_reminder_date', '<=', Carbon::today());
         })->orWhere(function ($query) {
@@ -31,7 +35,7 @@ class CheckRemindersJob implements ShouldQueue
         })->where('notified', false)->get();
 
         foreach ($reminders as $reminder) {
-            Mail::to($reminder->car->user->email)->send(new ReminderEmail($reminder));
+            FacadesMail::to($reminder->car->user->email)->send(new ReminderEmail($reminder));//ReminderEmail
             $reminder->update(['notified' => true]);
         }
     }

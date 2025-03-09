@@ -20,6 +20,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Requests\User\CreateUserRequest;
 //use App\Jobs\SendEmailJob as JobsSendEmailJob;
 use App\Jobs\SendEmailJob;
+use App\Http\Controllers\response;
 
 class AuthController extends Controller
 {
@@ -34,11 +35,11 @@ class AuthController extends Controller
           // Create the user
           $user = User::create($data);
   
-          // Generate JWT token
-          $token = JWTAuth::fromUser($user);
+          // Generate JWT otp
+          $otp = JWTAuth::fromUser($user);
         
 
-          return new UserResource($user ,$token);
+          return new UserResource($user ,$otp);
       }
   
       // Login a user
@@ -48,19 +49,19 @@ class AuthController extends Controller
           $credentials = $request->only('email', 'password');
   
 
-          if (!$token = JWTAuth::attempt($credentials)) {
+          if (!$otp = JWTAuth::attempt($credentials)) {
               return response()->json(['error' => 'Unauthorized'], 401);
           }
 
           $user = User::where("email" , $request->email)->first();
   
-          return new UserResource($user ,$token);
+          return new UserResource($user ,$otp);
       }
   
       // Logout the user
       public function logout()
       {
-          JWTAuth::invalidate(JWTAuth::getToken());
+          JWTAuth::invalidate(JWTAuth::getotp());
   
           return response()->json(['message' => 'Successfully logged out']);
       }
@@ -75,23 +76,22 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->firstOrFail();
 
-        // Generate Token
-        $token = Str::random(60);
-
+        $otp = rand(100000, 999999);
+        $user->otp=$otp;
         // Store in Password Resets Table
         DB::table('password_resets')->updateOrInsert(
             ['email' => $user->email],
-            ['token' => $token, 'created_at' => now()]
+            ['otp' => $otp, 'created_at' => now()]
         );
 
-        // dd($user->email,$token);
+        // dd($user->email,$otp);
         //dispatch(new jobController('marojojo707@gmail.com'));
-        dispatch(new SendEmailJob($user->email,$token));
+        dispatch(new SendEmailJob($user->email,$otp));
 
 
         // Send Email
-        // Mail::to($user->email)->send(new ResetPasswordMail($token, $user->email));
-        // Mail::to($user->email)->send(new SendEmailJob($user->email, $token));
+        // Mail::to($user->email)->send(new ResetPasswordMail($otp, $user->email));
+        // Mail::to($user->email)->send(new SendEmailJob($user->email, $otp));
         return response()->json(['message' => 'Password reset link sent!'], 200);
     }
 
@@ -101,18 +101,18 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-            'token' => 'required',
+            'otp' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:6|confirmed'
         ]);
 
         $resetData = DB::table('password_resets')
                 ->where('email', $request->email)
-                ->where('token', $request->token)
+                ->where('otp', $request->otp)
                 ->first();
 
         if (!$resetData) {
-            return response()->json(['message' => 'Invalid token'], 400);
+            return response()->json(['message' => 'Invalid otp'], 400);
         }
 
         // Update User Password
@@ -120,8 +120,10 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Delete Token
+        // Delete otp
         DB::table('password_resets')->where('email', $request->email)->delete();
+
+       
 
         return response()->json(['message' => 'Password reset successful!'], 200);
     }

@@ -58,8 +58,9 @@ class CarController extends Controller
     }
 
     public function create(){
-        return view("admin.car.create" , $this->getLookup() );
-
+        $data["row"] = null;
+        $data = array_merge($data , $this->getLookup());
+        return view("admin.car.create" , $data );
     }
 
     
@@ -131,11 +132,17 @@ class CarController extends Controller
             'trans' => true,
             'value' => request()->get('name' ),
             'attributes' => [
-                'class'=>'form-control',
-                'label'=>"Type",
+            'class'=>'form-control',
+            'label'=>"Type",
                 'placeholder'=>"name",
             ]
         ];
+    }
+    public function sell(Request $request, Car $car)
+    {
+        $car->update(['is_sold' => true,'user_id'=>$request->user_id]);
+        flash()->success("Sold Succefully");
+        return redirect()->back();
     }
 
     private function getLookup(){

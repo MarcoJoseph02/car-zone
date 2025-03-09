@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone_no')->default('N/A');
             $table->string('address');
+            $table->string('otp')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

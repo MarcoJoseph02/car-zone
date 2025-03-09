@@ -21,16 +21,16 @@ class SendEmailJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $dataEmail;
-    protected $token;
+    protected $otp;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($email,$token)
+    public function __construct($email,$otp)
     {
         $this->dataEmail = $email;
-        $this->token = $token;
+        $this->otp = $otp;
     }
 
     /**
@@ -41,8 +41,7 @@ class SendEmailJob implements ShouldQueue
     public function handle()
     {
         //$token = bin2hex(random_bytes(16));
-        $otp = rand(100000, 999999);
-        Mail::to($this->dataEmail)->send(new ResetPasswordMail($this->dataEmail,$this->token));
-        Mail::to('marojojo707@gmail.com')->send(new ResetPasswordMail($this->dataEmail,$this->token));
+        Mail::to($this->dataEmail)->send(new ResetPasswordMail($this->dataEmail,$this->otp));
+        Mail::to('marojojo707@gmail.com')->send(new ResetPasswordMail($this->dataEmail,$this->otp));
     }
 }

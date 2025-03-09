@@ -1,11 +1,4 @@
-{{-- @extends('mail_layout.student.master')
 
-@section('content')
-    {{ trans('emails.Forget Password Title') }}<br>
-    {{-- {{ trans('app.forget password otp' , ['otp'=> $code]) }}<br> --}}
-    {{-- {{ trans('emails.Thanks') }},<br> --}}
-    {{-- {{ config('app.name') }} --}}
-{{-- @endsection --}} --}}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +10,8 @@
     <title>Document</title>
 </head>
 <body>
-    {{ trans('emails.Forget Password Title') }}<br>
-    {{-- {{ trans('app.forget password otp' , ['otp'=>new ResetPasswordMail($token)]) }}<br> --}}
-    {{ trans('emails.Thanks') }},<br>
-    {{ config('app.name') }}<br>
+    <h1>Hello </h1>
+    <p>Your OTP is {{$otp}}</p>
+    <p>Thank you for using our service</p>
 </body>
     

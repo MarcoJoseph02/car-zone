@@ -9,8 +9,7 @@ class Reminder extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'car_id', 'part_name', 'maintenance_interval', 'next_reminder_date', 
-        'next_reminder_km', 'reminder_type', 'notified'
+        'car_id', 'part_name', 'maintenance_interval', 'next_reminder_date', 'notified'//0-1
     ];
     
 

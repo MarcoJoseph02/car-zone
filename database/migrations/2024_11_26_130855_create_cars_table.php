@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('model');
             // $table->string('image')->nullable();
             $table->integer('year');
+            $table->integer('user_id')->nullable();
+            $table->boolean('is_sold')->default(0);
+            $table->boolean('is_booked')->default(0);
             $table->float('price');
             $table->text('description');
             $table->timestamps();

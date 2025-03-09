@@ -13,9 +13,12 @@ class Car extends Model
         'branch_id',
         'category_id',
         'brand_id',
-        'model',
+        'model',//CLA200
         'year',
         'price',
+        'is_sold',
+        'is_booked',
+        'user_id',
         'description',
     ];
 
