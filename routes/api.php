@@ -1,14 +1,20 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReminderController;
+use Illuminate\Contracts\Queue\Job;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +45,22 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api')
 Route::resource('users', UserController::class);
 Route::resource('brand', BrandController::class);
 Route::resource('events', EventController::class);
-Route::resource('cars', EventController::class);
+Route::resource('cars', carController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('order', OrderController::class);
+
+//pass
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::get('/email', [AuthController::class, 'sendEmail']);
+
+
+
+Route::post('/cars/{carId}/update-maintenance', [ReminderController::class, 'updateMaintenance']);
+Route::get('/reminders/{id}/send-email', [ReminderController::class, 'sendReminderEmail']);
+Route::post('/cars/{car}/sell', [CarController::class, 'sell'])->name('cars.sell');
+
+
+

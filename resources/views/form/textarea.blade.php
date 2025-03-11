@@ -9,7 +9,7 @@
 
         @endphp
 
-        {!! Form::$type($name,(@$row->$name)?:(@$value),$attributes)!!}
+        {{-- {!! Form::$type($name,(@$row->$name)?:(@$value),$attributes)!!} --}}
         @if(@$errors)
             @php
                 $name=(isset($error_name))?$error_name:$name;

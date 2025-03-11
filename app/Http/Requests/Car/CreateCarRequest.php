@@ -22,7 +22,9 @@ class CreateCarRequest extends FormRequest
             'model'=>['required'],
             'year'=>['required'],
             'price'=>['required',"min:1"],
-            'description'=>['required'],
+            'featuers'=>['required'],
+            'performance'=>['required'],
+            'safety'=>['required'],
         ];
     }
 }

@@ -13,10 +13,25 @@ class Car extends Model
         'branch_id',
         'category_id',
         'brand_id',
-        'model',
+        'model',//CLA200
         'year',
         'price',
-        'description',
+        'is_sold',
+        'is_booked',
+        'user_id',
+        'doors',
+        'acceleration',//0-100 in 3 seconds
+        'top_speed',
+        'fuel_efficiency',//5L/100KM
+        'color',
+        'engine_type',//petrol
+        'engine_power',//100NM
+        'engine_cylinder',//4
+        'engine_cubic_capacity_type',//cc
+        'transmission',//manual
+        'features',//sensores camera 360
+        'performance',
+        'safety',
     ];
 
     /**
