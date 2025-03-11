@@ -27,12 +27,7 @@ class CarObserver
      */
     public function updated(Car $car)
     {
-        foreach ($car->reminders as $reminder) {
-            $reminder->update([
-                'next_reminder_date' => Carbon::now()->addMonths(6),
-                'next_reminder_km' => $car->current_km + 10000,
-                'notified' => false
-            ]);
+        
     }
 
     /**
@@ -67,5 +62,4 @@ class CarObserver
     // {
     //     //
     // }
-}
 }

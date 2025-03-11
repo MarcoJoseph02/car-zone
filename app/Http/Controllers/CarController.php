@@ -11,7 +11,9 @@ use App\Models\Car;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Http\Controllers\User;
 use App\Models\Reminder;
+use App\Models\User as ModelsUser;
 use Carbon\Carbon;
 
 class CarController extends Controller
@@ -54,37 +56,75 @@ class CarController extends Controller
         $data['rows'] = CarResource::collection(Car::paginate(20));
         $data['page_title'] = "Cars";
         $data['breadcrumb'] = '';
-        return view("admin.car.index" , $data);
+        return view("admin.car.index", $data);
     }
 
-    public function create(){
-        $data["row"] = null;
-        $data = array_merge($data , $this->getLookup());
-        return view("admin.car.create" , $data );
+    public function create()
+    {
+        return view("admin.car.create", $this->getLookup());
     }
 
-    
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request 
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateCarRequest $request)
+    public function store(Request $request)
     {
-       
-        $data = $request->validated();
+
+        $data = $request->all();
+        // dd($data);
         $car = Car::create($data);
+        // dd($car);
         return redirect()->route("admin.car.index");
     }
 
 
-    public function edit(Car $car){
+    public function edit(Car $car)
+    {
         $data["row"] = $car;
-        $data = array_merge($data , $this->getLookup());
-        return view("admin.car.edit" , $data );
+        $data = array_merge($data, $this->getLookup());
+        return view("admin.car.edit", $data);
     }
 
+
+
+    public function processSell(Request $request, $carId)
+    {
+        $car = Car::findOrFail($carId);
+
+        // Validate the selected user
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // Assign the car to the new owner
+        $car->user_id = $request->user_id;
+        $car->is_sold = true; // Update status to sold
+        $car->save();
+        $id = $request->user_id;
+        $userName = ModelsUser::find($id)->name;
+
+        // return view("admin.car.idex","car sold to {$userName}");
+        flash()->success("Sold Succefully");
+        return redirect()->route("admin.car.index");
+
+
+        //return response()->json(['message' => 'Car sold successfully!']);
+    }
+
+    public function getSellPage(Car $car){
+
+        $users = ModelsUser::all();
+        
+        return view("admin.car.sell",['car' => $car, 'users' => $users]);
+        // return view("admin.car.sell", compact('car','users'));
+    }
+
+    
+    
     /**
      * Display the specified resource.
      *
@@ -96,7 +136,7 @@ class CarController extends Controller
         return new CarResource($car);
     }
 
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -122,30 +162,32 @@ class CarController extends Controller
     {
         $car->delete();
         flash()->success("Deleted Succefully");
-        return redirect()->back();    
+        return redirect()->back();
     }
 
-    public function setFilters() {
+    public function setFilters()
+    {
         $this->filters[] = [
             'name' => 'name',
             'type' => 'input',
             'trans' => true,
-            'value' => request()->get('name' ),
+            'value' => request()->get('name'),
             'attributes' => [
-            'class'=>'form-control',
-            'label'=>"Type",
-                'placeholder'=>"name",
+                'class' => 'form-control',
+                'label' => "Type",
+                'placeholder' => "name",
             ]
         ];
     }
-    public function sell(Request $request, Car $car)
-    {
-        $car->update(['is_sold' => true,'user_id'=>$request->user_id]);
-        flash()->success("Sold Succefully");
-        return redirect()->back();
-    }
+    // public function sell(Request $request, Car $car)
+    // {
+    //     $car->update(['is_sold' => true,'user_id'=>$request->user_id]);
+    //     flash()->success("Sold Succefully");
+    //     return redirect()->back();
+    // }
 
-    private function getLookup(){
+    private function getLookup()
+    {
         return [
             "suppliers" => Supplier::pluck('lname', 'id'),
             "branches" => Branch::pluck('name', 'id'),

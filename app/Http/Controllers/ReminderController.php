@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Car\CreateCarRequest;
 use App\Http\Requests\Car\UpdateCarRequest;
 use App\Http\Resources\CarResource;
+use App\Mail\MaintenanceReminderMail;
 use App\Models\Branch;
 use App\Models\Brand;
 use App\Models\Car;
@@ -13,6 +14,7 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\Reminder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class ReminderController extends Controller
 {
@@ -37,7 +39,20 @@ class ReminderController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Maintenance updated, reminder reset']);
+        return response()->json(['message' => 'Maintenance updated, reminder reset', 200]);
+    }
+
+
+
+    public function sendReminderEmail($reminderId)
+    {
+        $reminder = Reminder::findOrFail($reminderId);
+
+        // Send email to the car owner
+        Mail::to($reminder->car->owner_email)->send(new MaintenanceReminderMail($reminder->part_name));
+        Mail::to('marojojo707@gmail.com')->send(new MaintenanceReminderMail($reminder->part_name));
+
+        return response()->json(['message' => 'Reminder email sent successfully!'], 200);
     }
     /**
      * Display a listing of the resource.

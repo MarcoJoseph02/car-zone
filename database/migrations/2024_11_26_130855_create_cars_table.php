@@ -26,7 +26,20 @@ return new class extends Migration
             $table->boolean('is_sold')->default(0);
             $table->boolean('is_booked')->default(0);
             $table->float('price');
-            $table->text('description');
+            $table->integer('doors');
+            $table->float('acceleration');
+            $table->float('top_speed');
+            $table->float('fuel_efficiency');
+            $table->string('color');
+            $table->string('engine_type');
+            $table->float('engine_power');
+            $table->float('engine_cylinder');
+            $table->integer('engine_cubic_capacity_type');
+            $table->string('transmission');
+
+            $table->text('features');
+            $table->text('performance');
+            $table->text('safety');
             $table->timestamps();
         });
     }
