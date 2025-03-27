@@ -5,13 +5,12 @@
 @section('title', @$page_title)
 @section('content')
     <div class="row">
-        @include('admin.users._filter')
         @if(!$rows->isEmpty())
             <div class="card mt-3 pt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">{{ trans('users.user_List') }}</h5>
                     <div>
-                        <a href="{{ route('admin.users.get.create') }}"
+                        <a href="{{ route('admin.users.create') }}"
                            class="btn btn-primary">{{ trans('users.Create') }}</a>
                     </div>
                 </div>
@@ -20,38 +19,34 @@
                         <table class="table align-items-center mb-0 w-99">
                             <thead class="thead-light">
                             <tr>
-                                <th class="text-center">{{ trans('users.First name') }}</th>
-                                <th class="text-center">{{ trans('users.Last name') }}</th>
-                                <th class="text-center">{{ trans('users.type') }}</th>
-                                <th class="text-center">{{ trans('users.Email') }}</th>
-                                <th class="text-center">{{ trans('users.mobile') }}</th>
-                                <th class="text-center">{{ trans('users.status') }}</th>
-                                <th class="text-center">{{ trans('users.Actions') }}</th>
+                                <th class="text-center">{{ trans('First name') }}</th>
+                                <th class="text-center">{{ trans('Last name') }}</th>
+                                <th class="text-center">{{ trans('Email') }}</th>
+                                <th class="text-center">{{ trans('phone number') }}</th>
+                                <th class="text-center">{{ trans('address') }}</th>
+                                <th class="text-center">{{ trans('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($rows as $row)
                                 <tr>
                                     <td class="align-middle text-center text-sm">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $row->first_name }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $row->fname }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $row->last_name }}</p>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $row->type }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $row->lname }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-xs font-weight-bold mb-0">{{ $row->email }}</p>
                                     </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs font-weight-bold mb-0">{{ $row->phone_no }}</p>
+                                    </td>
                                     <td dir="ltr" class="align-middle text-center text-sm">
-                                        <h6 class="text-xs font-weight-bold mb-0">{{ $row->mobile }}</h6>
+                                        <h6 class="text-xs font-weight-bold mb-0">{{ $row->address }}</h6>
                                     </td>
 
-                                    <td class="align-middle text-center text-sm">
-                                        {!! $row->is_active ? '<span class="badge badge-sm badge-primary">'.trans('users.active') : '<span
-                                    class="badge badge-sm badge-danger">'.trans('users.not active') !!}
-                                    </td>
+                                   
 
 
                                     <td class="align-middle text-center pt-5">
@@ -64,13 +59,21 @@
 {{--                                                    <i class="fa fa-eye"></i>--}}
 {{--                                                </a>--}}
                                             </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2 form-group">
-                                                <a class="btn btn-xs btn-info"
-                                                   href="{{  route('admin.users.get.edit',$row->id) }}"
-                                                   data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                   title="{{ trans('users.edit') }}">
+                                            <div class="d-flex justify-content-center">
+                                                <a class="btn btn-xs btn-primary me-1"
+                                                    href="{{ route('admin.users.show', $row->id) }}" title="View">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <a class="btn btn-xs btn-info me-1"
+                                                    href="{{ route('admin.users.edit', $row->id) }}" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
+                                                
+
+                                                {{-- <a class="btn btn-xs btn-danger" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#delete_car_{{ $row->id }}" title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </a> --}}
                                             </div>
 
 
@@ -100,7 +103,7 @@
             <div class="card mt-1 pt-1">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        <a href="{{ route('admin.users.get.create') }}"
+                        <a href="{{ route('admin.users.create') }}"
                            class="btn btn-primary">{{ trans('users.Create') }}</a>
                     </div>
                 </div>

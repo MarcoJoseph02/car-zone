@@ -59,7 +59,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return new CategoryResource($category);
+        return view("admin.category.view",compact('category'));
+        // return new CategoryResource($category);
     }
 
 
@@ -72,7 +73,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $category->update($data);
         return redirect()->route("admin.category.index");
     }

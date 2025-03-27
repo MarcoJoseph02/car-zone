@@ -1,4 +1,4 @@
-@if(isset($row))
+{{-- @if(isset($row))
     <div class="form-group">
         <label for="name" class="form-control-label">{{ trans('users.Type') }}</label> :
         <span style="font-size: 16px; font-weight: bold; color: black;">( {{ trans('users.' . $row->type) }} )</span>
@@ -87,4 +87,30 @@
         });
     </script>
 @endpush
+ --}}
 
+ @php
+    $attributes = ['class' => 'form-control', 'col-class' => "col-md-12"];
+    
+    $fields = [
+        'fname' => ['label' => "First Name", 'placeholder' => "Enter First Name", 'type' => 'text'],
+        'lname' => ['label' => "Last Name", 'placeholder' => "Enter Last Name", 'type' => 'text'],
+        'email' => ['label' => "Email", 'placeholder' => "Enter Email", 'type' => 'email'],
+        //'password' => ['label' => "Password", 'placeholder' => "Enter Password", 'type' => 'password'],
+        'phone_no' => ['label' => "Phone Number", 'placeholder' => "Enter Phone Number", 'type' => 'text'],
+        'address' => ['label' => "Address", 'placeholder' => "Enter Address", 'type' => 'text'],
+        //'otp' => ['label' => "OTP", 'placeholder' => "Enter OTP", 'type' => 'text','nullable' => true],
+    ];
+@endphp
+
+@foreach($fields as $name => $details)
+    @include('form.input', [
+        'type' => $details['type'],
+        'name' => $name,
+        'value' => $row->$name ?? null,
+        'attributes' => array_merge($attributes, [
+            'label' => $details['label'],
+            'placeholder' => $details['placeholder']
+        ])
+    ])
+@endforeach

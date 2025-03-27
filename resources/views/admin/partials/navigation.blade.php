@@ -21,6 +21,15 @@
                 </a>
             </li>
             <li class="nav-item ">
+                <a class="nav-link {{getActiveElementByRoute(route:'admin.users.index')}}"
+                   href="{{ route('admin.users.index') }}">
+                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                        <i class="fa fa-users text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1"> Users </span>
+                </a>
+            </li>
+            <li class="nav-item ">
                 <a class="nav-link {{getActiveElementByRoute(route:'admin.category.index')}}"
                    href="{{ route('admin.category.index') }}">
                     <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">

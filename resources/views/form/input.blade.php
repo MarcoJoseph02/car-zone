@@ -6,6 +6,9 @@
         </label>
         <div class="col-12">
             @php
+            //dd($row);
+            //dd($type,$name);
+            //dd($type,$name,$row->$name,$value);
                 $attributes['autocomplete']='off';
                 if($type == "textarea"){
                     $attributes['class'] .= ' summernote';

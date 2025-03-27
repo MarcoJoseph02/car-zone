@@ -16,7 +16,8 @@
             </div>
             <div class="card-body">
                 <div class="col-md-12 col-sm-12 col-xs-12 x_panel">
-                    {{ Form::model($row,['method' => 'put','route' => ['admin.brand.update' , $row->id],'class'=>'form-vertical form-label-left','enctype' => 'multipart/form-data' ]) }}
+                    {{ Form::model($row,['method' => 'put','route' => ['admin.car.update' , $row->id],'class'=>'form-vertical form-label-left','enctype' => 'multipart/form-data' ]) }}
+                    
                     <div class="row">
                         @include('admin.car.form')
                         <div class="form-group">
