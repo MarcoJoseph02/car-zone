@@ -58,7 +58,7 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
-        
+        return view("admin.branches.view",  compact('branch'));
     }
 
     /**

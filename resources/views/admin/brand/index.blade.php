@@ -1,3 +1,4 @@
+{{-- @php phpinfo() @endphp --}}
 @extends('layouts.admin_layout')
 @push('title')
     {{ @$page_title }}
@@ -20,6 +21,7 @@
                         <table class="table align-items-center mb-0 w-99">
                             <thead>
                             <tr>
+                                <th class="text-center">Image</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -27,6 +29,7 @@
                             <tbody>
                             @foreach($rows as $row)
                                 <tr class="text-center">
+                                    <td>{{ $row->image ?? ''}}</td>
                                     <td>{{ $row->name ?? ''}}</td>
                                     <td class="align-middle text-center pt-5">
                                         <div class="row">

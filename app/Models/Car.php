@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Car extends Model
+class Car extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
     protected $fillable = [
         'supplier_id',
         'branch_id',
@@ -34,6 +36,10 @@ class Car extends Model
         'safety',
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images'); // Or remove singleFile() for multiple images
+    }
     /**
      * Relationships
      */

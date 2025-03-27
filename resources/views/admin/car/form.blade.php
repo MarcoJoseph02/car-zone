@@ -113,6 +113,7 @@
         'features' => ['label' => "Features", 'placeholder' => "Enter Features", 'type' => 'textarea'],
         'performance' => ['label' => "Performance", 'placeholder' => "Enter Performance Details", 'type' => 'textarea'],
         'safety' => ['label' => "Safety", 'placeholder' => "Enter Safety Features", 'type' => 'textarea'],
+        
     ];
 
     $selectFields = [
@@ -122,11 +123,9 @@
         'branch_id' => ['label' => "Branch", 'options' => $branches],
     ];
 
-    $booleanFields = [
-        //'is_sold' => ['label' => "Is Sold"],
-        //'is_booked' => ['label' => "Is Booked"],
-    ];
+    
 @endphp
+
 
 @foreach($fields as $name => $details)
     @include('form.input', [
@@ -151,12 +150,45 @@
     ])
 @endforeach
 
-@foreach($booleanFields as $name => $details)
-    @include('form.checkbox', [
-        'name' => $name,
-        'value' => $row->$name ?? 0,
-        'attributes' => array_merge($attributes, [
-            'label' => $details['label']
-        ])
-    ])
-@endforeach
+
+{{-- <input type="file" id="files" name="files" multiple><br><br> --}}
+{{-- <input type="file" id="images" name="images[]" accept="image/*" multiple><br><br> --}}
+
+{{-- @include('form.file',[
+    'name'=>'images[]',
+    'attributes'=>func($attributes[])
+    ]) --}}
+
+    {{-- add in an array  or use array_merge()  --}}
+    {{-- 2nd --}}
+
+    @php
+    $imageAttributes = [
+        'class' => 'form-control',
+        'col-class' => "col-md-12",
+        'label' => "Car Main Image",
+    ];
+@endphp
+
+@include('form.file', [
+    'name' => 'main',
+    'value' => null, // File inputs don't keep values for security reasons
+    'attributes' => $imageAttributes
+])
+
+
+
+    @php
+    $imageAttributes = [
+        'class' => 'form-control',
+        'col-class' => "col-md-12",
+        'label' => "Car gallery",
+        'multiple'=> "multiple"
+    ];
+@endphp
+
+@include('form.file', [
+    'name' => 'gallery[]',
+    'value' => null, // File inputs don't keep values for security reasons
+    'attributes' => $imageAttributes
+])

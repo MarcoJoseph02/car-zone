@@ -1,51 +1,97 @@
 @extends('layouts.admin_layout')
+
 @push('title')
     {{ @$page_title }}
 @endpush
+
 @section('title', @$page_title)
+
 @section('content')
     <div class="row mb-5">
-
         <div class="col-lg-12 mt-lg-0 mt-4">
             <!-- Card Profile -->
             <div class="card card-body">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto col-8 my-auto">
                         <div class="h-100">
-                            <h5 class="mb-0">{{ trans('schools.view_school') }}</h5>
-                        </div>
-                    </div>
-                    <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
-                        <div class="form-check form-switch ms-2">
-                            <a href="{{ route('admin.schools.get.edit', $row->id) }}"
-                               class="btn btn-success">{{ trans('app.Edit') }}</a>
+                            <h5 class="mb-0">Car Details</h5>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Card Basic Info -->
-            <div class="card mt-4" id="basic-course-info">
+
+            <!-- Car Information -->
+            <div class="card mt-4">
                 <div class="card-body p-3">
-                    <div class="table-responsive">
                     <table class="table align-items-center mb-0 w-99">
-                        <thead>
-                        <tr>
-                            <th class="text-center">{{ trans('schools.national_id_list') }}</th>
-                        </tr>
-                        </thead>
                         <tbody>
-                        @foreach($nationalIds as $nationalId)
-                            <tr class="text-center">
-                                <td>{{ $nationalId->national_id }}</td>
+                            <tr>
+                                <th>Model</th>
+                                <td>{{ $car->model }}</td>
                             </tr>
-                        @endforeach
+                            <tr>
+                                <th>Year</th>
+                                <td>{{ $car->year }}</td>
+                            </tr>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ $car->id }}</td>
+                            </tr>
+                            <tr>
+                                <th>is_booked</th>
+                                <td>{{ $car->is_booked  }}</td>
+                            </tr>
+                            <tr>
+                                <th>is_sold</th>
+                                <td>{{ $car->is_sold  }}</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>${{ number_format($car->price, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Color</th>
+                                <td>{{ $car->color }}</td>
+                            </tr>
+                            <tr>
+                                <th>Engine Type</th>
+                                <td>{{ $car->engine_type }}</td>
+                            </tr>
+                            <tr>
+                                <th>Transmission</th>
+                                <td>{{ $car->transmission }}</td>
+                            </tr>
+                            <tr>
+                                <th>Top Speed</th>
+                                <td>{{ $car->top_speed }} km/h</td>
+                            </tr>
+                            <tr>
+                            @php $media = $car->getFirstMedia("mainImage");//more than 1 image (array)
+                            @endphp
+                                <th>Main Image</th>
+                                <td>
+                                    <img src="{{ $media->getUrl() }}" alt="" width="100">
+                                </td>
+                            </tr>
+                            <tr>
+                            @php
+                            $mediaItems = $car->getMedia("gallery");
+                            //dd($car, $mediaItems);
+                            //dd($mediaItems);
+                            @endphp
+                                @foreach ($mediaItems as $image)
+                                <tr>
+                                    <th>gallery</th>
+                                    <td>
+                                        <img src="{{ $image->getUrl()}}" alt="" width="100">
+                                    </td>                                     
+                                </tr>
+                                @endforeach
                         </tbody>
                     </table>
-                    </div>
-                    <!-- End National ID Table -->
-
                 </div>
             </div>
+
         </div>
     </div>
 @endsection

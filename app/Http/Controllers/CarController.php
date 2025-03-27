@@ -16,10 +16,16 @@ use App\Models\Reminder;
 use App\Models\User as ModelsUser;
 use Carbon\Carbon;
 
+
 class CarController extends Controller
 {
 
     private $filters = [];
+    // if ($request->hasFile('images')) {
+    //     foreach ($request->file('images') as $image) {
+    //         $car->addMedia($image)->toMediaCollection('cars');
+    //     }
+    // }
 
     public function updateMaintenance(Request $request, $carId)
 {
@@ -77,6 +83,18 @@ class CarController extends Controller
         $data = $request->all();
         // dd($data);
         $car = Car::create($data);
+        if ($request->hasFile('main')) { //name = images
+            
+            $image = $request->file('main');
+            $car->addMedia($image)->toMediaCollection('mainImage');
+        }
+    
+        if ($request->hasFile('gallery')) { //name = images
+            
+        foreach ($request->file('gallery') as $image) {
+            $car->addMedia($image)->toMediaCollection('gallery');
+        }
+    }
         // dd($car);
         return redirect()->route("admin.car.index");
     }
@@ -133,7 +151,11 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return new CarResource($car);
+        // $carId = Car::findOrFail($car)->id;
+        return view("admin.car.view",compact('car'));
+        // return redirect()->route("admin.car.view",['car'=> $id]);
+
+       // return new CarResource($car);
     }
 
 
@@ -149,7 +171,7 @@ class CarController extends Controller
     {
         $data = $request->validated();
         $car->update($data);
-        return redirect()->route("admin.brand.index");
+        return redirect()->route("admin.car.index");
     }
 
     /**
@@ -179,12 +201,7 @@ class CarController extends Controller
             ]
         ];
     }
-    // public function sell(Request $request, Car $car)
-    // {
-    //     $car->update(['is_sold' => true,'user_id'=>$request->user_id]);
-    //     flash()->success("Sold Succefully");
-    //     return redirect()->back();
-    // }
+
 
     private function getLookup()
     {

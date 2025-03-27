@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APIs;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
@@ -10,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    private $filters = [];
     /**
      * Display a listing of the resource.
      *
@@ -18,12 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->setFilters();
-        $data['filters'] = $this->filters;
-        $data['rows'] = userResource::collection(User::paginate(20));
-        $data['page_title'] = "Users";
-        $data['breadcrumb'] = '';
-        return view("admin.users.index", $data);
+        return UserResource::collection(User::paginate(20)) ;
     }
 
 
@@ -50,16 +45,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         // $user=User::findOrFail($id);
-        // return new UserResource($user);
-        return view("admin.users.view", compact('user'));
-    }
-
-    public function edit(User $user)
-    {
-        $data["row"] = $user;
-        $data = array_merge($data);
-        // dd($data);
-        return view("admin.users.edit", $data);
+        return new UserResource($user);
     }
 
     /**
@@ -71,10 +57,9 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $data = $request->validated();
+        $data= $request->validated();
         $user->update($data);
-        // return  new UserResource($user);
-        return redirect()->route("admin.users.index");
+        return  new UserResource($user);
     }
 
     /**
@@ -86,23 +71,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        // return response()->json(null , 200);
-        flash()->success("Deleted Succefully");
-        return redirect()->back();
-    }
-
-    public function setFilters()
-    {
-        $this->filters[] = [
-            'name' => 'name',
-            'type' => 'input',
-            'trans' => true,
-            'value' => request()->get('name'),
-            'attributes' => [
-                'class' => 'form-control',
-                'label' => "Type",
-                'placeholder' => "name",
-            ]
-        ];
+        return response()->json(null , 200);
     }
 }

@@ -8,7 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\APIs\UserController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +33,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+// Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+
 
 // Route::get('users' , [UserController::class , 'index'] )->name('users.index');
 // Route::post('users' , [UserController::class , 'store'] );
