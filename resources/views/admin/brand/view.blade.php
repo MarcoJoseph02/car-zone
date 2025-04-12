@@ -33,12 +33,18 @@
                                 <th>NAME</th>
                                 <td>{{ $brand->name  }}</td>
                             </tr>
-                            
-                            <tr>
-                                <th>IMAGE</th>
-                                <td>{{ $brand->image }}</td>
+
+                           <tr>
+                            @php $media = $brand->getFirstMedia("brand_image");//more than 1 image (array)
+                            $url = $media->getUrl();
+                            //dd($brand, $media, $url);
+                            //dd($url);
+                            @endphp
+                                <th>Brand Image</th>
+                                <td>
+                                    <img src="{{ $media->getUrl() }}" alt="" width="100">
+                                </td>
                             </tr>
-                           
                                                   
                         </tbody>
                     </table>

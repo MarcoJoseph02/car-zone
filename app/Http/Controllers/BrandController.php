@@ -7,6 +7,7 @@ use App\Http\Requests\Brand\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class BrandController extends Controller
 {
@@ -44,7 +45,13 @@ class BrandController extends Controller
     public function store(CreateBrandRequest $request)
     {
         $data = $request->validated();
-        $category = Brand::create($data);
+        $brand = Brand::create($data);
+        if ($request->hasFile('brand_image')) { //name = images
+            
+            $image = $request->file('brand_image');
+            $brand->addMedia($image)->toMediaCollection('brand_image');
+            //dd($brand->getFirstMediaUrl('brand_image'));
+        }
         return redirect()->route("admin.brand.index");
     }
 
