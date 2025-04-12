@@ -5,6 +5,7 @@
 
  --}}
 
+
 @php
     $attributes = [
         'class' => 'form-control',
@@ -26,12 +27,12 @@
         'class' => 'form-control',
         'col-class' => "col-md-12",
         'label' => "Brand Image",
-        //'multiple'=> "multiple"
     ];
 @endphp
 
 @include('form.file', [
-    'name' => 'image',
+    'name' => 'brand_image',
     'value' => null, // File inputs don't keep values for security reasons
+    //'value' => $row->brand_image  ?? null,
     'attributes' => $imageAttributes
 ])

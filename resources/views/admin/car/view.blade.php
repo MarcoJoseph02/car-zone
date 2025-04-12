@@ -67,6 +67,8 @@
                             </tr>
                             <tr>
                             @php $media = $car->getFirstMedia("mainImage");//more than 1 image (array)
+                            $url = $car->getFirstMediaUrl("mainImage");
+                            //dd($url);
                             @endphp
                                 <th>Main Image</th>
                                 <td>
@@ -76,8 +78,10 @@
                             <tr>
                             @php
                             $mediaItems = $car->getMedia("gallery");
-                            //dd($car, $mediaItems);
+                            $url = $car->getFirstMediaUrl("gallery");
+                            dd($car, $mediaItems, $url);
                             //dd($mediaItems);
+                            //dd($url);
                             @endphp
                                 @foreach ($mediaItems as $image)
                                 <tr>
