@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,7 +14,7 @@ class MaintenanceReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $reminder;
+    public $reminder;
     /**
      * Create a new message instance.
      *
@@ -50,8 +51,11 @@ class MaintenanceReminderMail extends Mailable
     public function build()
     {
         return $this->subject('Car Maintenance Reminder')
-                    ->view('emails.reminder')
-                    ->with(['reminder' => $this->reminder]);
+                    ->view('emails.reminder-email')
+                    ->with(['reminder' => $this->reminder,
+                        'car' => $this->reminder->car,
+                        'part_name' => $this->reminder->part_name,
+                        'next_reminder_date' => $this->reminder->next_reminder_date,]);
     }
 
 

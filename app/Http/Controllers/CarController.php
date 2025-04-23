@@ -28,27 +28,27 @@ class CarController extends Controller
     // }
 
     public function updateMaintenance(Request $request, $carId)
-{
-    $car = Car::findOrFail($carId);
-    $partName = $request->part_name;
+    {
+        $car = Car::findOrFail($carId);
+        $partName = $request->part_name;
 
-    // Find the reminder for the specific part
-    $reminder = Reminder::where('car_id', $carId)
-                        ->where('part_name', $partName)
-                        ->first();
+        // Find the reminder for the specific part
+        $reminder = Reminder::where('car_id', $carId)
+            ->where('part_name', $partName)
+            ->first();
 
-    if ($reminder) {
-        $nextInterval = $reminder->maintenance_interval; // Get interval from DB (3, 6, 12 months)
+        if ($reminder) {
+            $nextInterval = $reminder->maintenance_interval; // Get interval from DB (3, 6, 12 months)
 
-        $reminder->update([
-            'next_reminder_date' => Carbon::now()->addMonths($nextInterval),
-            'next_reminder_km' => $car->current_km + (10000 * ($nextInterval / 6)), // Adjusted based on months
-            'notified' => false
-        ]);
+            $reminder->update([
+                'next_reminder_date' => Carbon::now()->addMonths($nextInterval),
+                'next_reminder_km' => $car->current_km + (10000 * ($nextInterval / 6)), // Adjusted based on months
+                'notified' => false
+            ]);
+        }
+
+        return response()->json(['message' => 'Maintenance updated, reminder reset']);
     }
-
-    return response()->json(['message' => 'Maintenance updated, reminder reset']);
-}
     /**
      * Display a listing of the resource.
      *
@@ -84,17 +84,17 @@ class CarController extends Controller
         // dd($data);
         $car = Car::create($data);
         if ($request->hasFile('main')) { //name = images
-            
+
             $image = $request->file('main');
             $car->addMedia($image)->toMediaCollection('mainImage');
         }
-    
+
         if ($request->hasFile('gallery')) { //name = images
-            
-        foreach ($request->file('gallery') as $image) {
-            $car->addMedia($image)->toMediaCollection('gallery');
+
+            foreach ($request->file('gallery') as $image) {
+                $car->addMedia($image)->toMediaCollection('gallery');
+            }
         }
-    }
         // dd($car);
         return redirect()->route("admin.car.index");
     }
@@ -109,7 +109,7 @@ class CarController extends Controller
 
 
 
-    public function processSell(Request $request, $carId)
+    public function processSell_2(Request $request, $carId)
     {
         $car = Car::findOrFail($carId);
 
@@ -132,17 +132,52 @@ class CarController extends Controller
 
         //return response()->json(['message' => 'Car sold successfully!']);
     }
+    public function processSell(Request $request, $carId)
+    {
+        $car = Car::findOrFail($carId);
 
-    public function getSellPage(Car $car){
+        // Validate the selected user
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // Assign the car to the new owner
+        $car->user_id = $request->user_id;
+        $car->is_sold = true; // Update status to sold
+        $car->save();
+
+        // Get the current date to start maintenance reminder after selling
+        $soldDate = Carbon::now();
+
+        // Loop over all parts and set maintenance reminders based on selling date
+        $reminders = Reminder::where('car_id', $carId)->get();
+        foreach ($reminders as $reminder) {
+            // Get the interval from the reminder
+            $nextInterval = $reminder->maintenance_interval;
+
+            // Update the reminder with the new maintenance date
+            $reminder->update([
+                'next_reminder_date' => $soldDate->addMonths($nextInterval),
+                'notified' => false
+            ]);
+        }
+
+        flash()->success("Car sold and maintenance reminders updated.");
+        return redirect()->route("admin.car.index");
+    }
+
+
+    public function getSellPage(Car $car)
+    {
 
         $users = ModelsUser::all();
-        
-        return view("admin.car.sell",['car' => $car, 'users' => $users]);
+
+        return view("admin.car.sell", ['car' => $car, 'users' => $users]);
         // return view("admin.car.sell", compact('car','users'));
     }
 
-    
-    
+
+
     /**
      * Display the specified resource.
      *
@@ -152,10 +187,10 @@ class CarController extends Controller
     public function show(Car $car)
     {
         // $carId = Car::findOrFail($car)->id;
-        return view("admin.car.view",compact('car'));
+        return view("admin.car.view", compact('car'));
         // return redirect()->route("admin.car.view",['car'=> $id]);
 
-       // return new CarResource($car);
+        // return new CarResource($car);
     }
 
 

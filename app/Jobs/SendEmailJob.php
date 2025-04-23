@@ -42,6 +42,6 @@ class SendEmailJob implements ShouldQueue
     {
         //$token = bin2hex(random_bytes(16));
         Mail::to($this->dataEmail)->send(new ResetPasswordMail($this->dataEmail,$this->otp));
-        Mail::to('marojojo707@gmail.com')->send(new ResetPasswordMail($this->dataEmail,$this->otp));
+        // Mail::to('marojojo707@gmail.com')->send(new ResetPasswordMail($this->dataEmail,$this->otp));
     }
 }

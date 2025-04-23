@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('part_name'); // e.g., "Oil Filter"
             $table->integer('maintenance_interval')->default(6); // Interval in months (Default: 6 months)
             $table->date('next_reminder_date')->nullable();
-            $table->integer('next_reminder_km')->nullable(); // If usage-based
             $table->enum('reminder_type', ['time', 'usage', 'condition']);
             $table->boolean('notified')->default(false); // Track if notification was sent
+            $table->timestamp('last_notified_at')->nullable(); // Track when the last notification was sent
             $table->timestamps();
         });
     }
