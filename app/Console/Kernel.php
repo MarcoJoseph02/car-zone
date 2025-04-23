@@ -10,6 +10,10 @@ use App\Console\Mail;
 use App\Console\FacadesMail;
 use Illuminate\Support\Facades\Mail as SupportFacadesMail;
 use App\Models\Reminder;
+use App\Models\Booking;
+use App\Models\Car;
+// use DB;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -21,11 +25,38 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        $schedule->job(new CheckRemindersJob)->daily();
+        $schedule->command('process:deposits')->hourly();
+        
+        $schedule->call('App\Http\Controllers\ReminderController@sendMaintenanceReminder')
+             ->daily();
+        // $schedule->job(new CheckRemindersJob)->daily();
 
         // $schedule->command('inspire')->hourly();
         // $schedule->job(new CheckRemindersJob)->daily();
+
+       // Check and expire unpaid bookings every 30 minutes
+
+        $schedule->call(function () {
+            $expired = Booking::where('status', 'pending_payment')
+                ->where('created_at', '<', now()->subHours(72))
+                ->get();
+
+            DB::transaction(function () use ($expired) {
+                foreach ($expired as $booking) {
+                    // Free up the car
+                    Car::where('id', $booking->car_id)
+                        ->update(['is_available' => true]);
+                        
+                    // Mark booking as expired
+                    $booking->update([
+                        'status' => 'expired',
+                        'cancelled_at' => now()
+                    ]);
+                }
+            });
+        })->everyThirtyMinutes();
+        
+        // Send maintenance reminder emails
         $schedule->call(function () {
             $reminders = Reminder::whereDate('next_reminder_date', now()->toDateString())
                 ->where('notified', false)

@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\APIs\BookingController;
 use App\Http\Controllers\AuthController;
 // use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CarController;
+use App\Http\Controllers\APIs\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\JobController;
@@ -13,7 +14,9 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReminderController;
+use App\Models\Booking;
 use Illuminate\Contracts\Queue\Job;
+
 
 
 /*
@@ -63,6 +66,32 @@ Route::get('/email', [AuthController::class, 'sendEmail']);
 Route::post('/cars/{carId}/update-maintenance', [ReminderController::class, 'updateMaintenance']);
 Route::get('/reminders/{id}/send-email', [ReminderController::class, 'sendReminderEmail']);
 Route::post('/cars/{car}/sell', [CarController::class, 'sell'])->name('cars.sell');
+
+// Handle successful payments
+Route::post('/stripe/webhook', function (Request $request) {
+    $payload = $request->all();
+    
+    if ($payload['type'] === 'payment_intent.succeeded') {
+        $paymentIntent = $payload['data']['object'];
+        
+        Booking::where('payment_intent_id', $paymentIntent['id'])
+            ->update([
+                'status' => 'active',
+                'deposit_paid' => true,
+                'deposit_charged_at' => now()
+            ]);
+    }
+});
+
+
+
+Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:api');
+
+Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->middleware('auth:api');
+
+Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy'])->middleware('auth:api');
+
+Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
 
 
 

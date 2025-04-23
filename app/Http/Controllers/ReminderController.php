@@ -82,23 +82,97 @@ class ReminderController extends Controller
      */
     public function store(Request $request)
     {
-        // Get the maintenance interval based on part name
-        $interval = Reminder::getIntervalForPart($request->part_name);
-
-        // Calculate the next reminder date (current date + interval months)
-        $nextReminderDate = now()->addMonths($interval);
-
-        // Save to database
-        Reminder::create([
-            'car_id' => $request->car_id,
-            'part_name' => $request->part_name,
-            'maintenance_interval' => $interval,
-            'next_reminder_date' => $nextReminderDate,
-            'reminder_type' => 'time',
+        $request->validate([
+            'car_id' => 'required|exists:cars,id',
         ]);
+
+        $maintenanceParts = [
+            'for_me' => [
+                'interval' => 1, // 1 hour
+                'unit' => 'minute', // Specify the unit as 'minute'
+            ],
+            'Oil Filter' => [
+                'interval' => 3, // 3 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Brake Pads' => [
+                'interval' => 12, // 12 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Tires' => [
+                'interval' => 6, // 6 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Air Filter' => [
+                'interval' => 6, // 6 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Battery' => [
+                'interval' => 12, // 12 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+        ];
+        foreach ($maintenanceParts as $partName => $partData) {
+            $interval = $partData['interval'];
+            $unit = $partData['unit'];
+
+            // Calculate the next reminder date based on unit
+            if ($unit === 'minute') {
+                $nextReminderDate = now()->addMinutes($interval);
+            } elseif ($unit === 'month') {
+                $nextReminderDate = now()->addMonths($interval);
+            }
+            // $interval = Reminder::getIntervalForPart($request->part_name); do not need to use it bec. we already have the interval in the array
+
+
+            // Save the reminder to the database
+            Reminder::create([
+                'car_id' => $request->car_id,
+                'part_name' => $partName,
+                'maintenance_interval' => $interval,
+                'next_reminder_date' => $nextReminderDate,
+                'reminder_type' => 'time', // Assuming reminder type is 'time'
+                'notified' => false, // Initially, not notified
+            ]);
+        }
 
         return response()->json(['message' => 'Reminder added successfully!'], 201);
     }
+
+
+    public function sendMaintenanceReminder()
+    {
+        // Get all reminders that are due for sending (based on the 'next_reminder_date')
+        $reminders = Reminder::whereNotNull('next_reminder_date') // Ensure that the reminder date exists
+            ->where('next_reminder_date', '<=', now()) // Ensure that the reminder time has arrived
+            ->get();
+
+        foreach ($reminders as $reminder) {
+            $intervalInMonths = $reminder->maintenance_interval;
+            $lastNotifiedAt = $reminder->last_notified_at;
+
+            // Check if enough time has passed since the last reminder
+            if ($lastNotifiedAt === null || $lastNotifiedAt->diffInMonths(now()) >= $intervalInMonths) {
+                // Send the maintenance reminder email
+                Mail::to($reminder->car->user->email)->send(new MaintenanceReminderMail($reminder));
+
+                // Update the reminder with the new last notified time
+                $reminder->update([
+                    'last_notified_at' => now(), // Update the last notification timestamp
+                    'notified' => true, // Mark as notified
+                ]);
+
+                // Update the next reminder date based on the maintenance interval
+                $nextReminderDate = now()->addMonths($reminder->maintenance_interval);
+                $reminder->update([
+                    'next_reminder_date' => $nextReminderDate,
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Maintenance reminders sent successfully!'], 200);
+    }
+
 
     /**
      * Display the specified resource.

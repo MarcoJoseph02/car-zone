@@ -40,6 +40,7 @@ return new class extends Migration
             $table->text('features');
             $table->text('performance');
             $table->text('safety');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }
