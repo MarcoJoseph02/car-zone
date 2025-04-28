@@ -10,6 +10,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\APIs\UserController;
+use App\Http\Controllers\CommentController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,8 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 // Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+
+
 
 
 // Route::get('users' , [UserController::class , 'index'] )->name('users.index');
@@ -94,4 +97,8 @@ Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'show
 Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
 
 
-
+Route::middleware('auth:api')->get('/comments', [CommentController::class, 'index']); // 📄 List comments
+Route::middleware('auth:api')->delete('/comments/{comment}/reaction', [CommentController::class, 'removeReaction']); // ❌ Remove reaction
+Route::middleware('auth:api')->post('/comments', [CommentController::class, 'update']); // Update comment
+Route::middleware('auth:api')->post('/comments', [CommentController::class, 'store']); // Create comment
+Route::middleware('auth.api')->post('/comments/{comment}/react', [CommentController::class, 'react']); // React to comment
