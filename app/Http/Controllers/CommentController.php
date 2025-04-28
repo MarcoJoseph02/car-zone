@@ -17,41 +17,45 @@ class CommentController extends Controller
      */
     // at the top if not already
 
+    // public function index()
+    // {
+    //     // if (!auth()->check()) {
+    //     //     return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
+    //     // }
+    //     $userId = Auth::id();
+    //     $comments = Comment::with('user', 'reactions') // eager load user and reactions
+    //         ->latest()
+    //         ->get()
+    //         ->map(function ($comment) use ($userId) {
+    //             $userReaction = $comment->reactions
+    //                 ->where('user_id', $userId)
+    //                 ->first();
+    //             return [
+    //                 'id' => $comment->id,
+    //                 'user' => [
+    //                     'id' => $comment->user->id,
+    //                     'name' => $comment->user->name,
+    //                 ],
+    //                 'body' => $comment->body,
+    //                 'created_at' => $comment->created_at->diffForHumans(),
+    //                 'reactions' => [
+    //                     'like' => $comment->reactions->where('type', 'like')->count(),
+    //                     'love' => $comment->reactions->where('type', 'love')->count(),
+    //                     'haha' => $comment->reactions->where('type', 'haha')->count(),
+    //                     'angry' => $comment->reactions->where('type', 'angry')->count(),
+    //                 ],
+    //                 'user_reacted' => $userReaction ? true : false,
+    //                 'user_reaction_type' => $userReaction ? $userReaction->type : null,
+    //             ];
+    //         });
+
+    //     return response()->json([
+    //         'comments' => $comments,
+    //     ], 200);
+    // }
     public function index()
     {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
-        }
-        $userId = Auth::id();
-        $comments = Comment::with('user', 'reactions') // eager load user and reactions
-            ->latest()
-            ->get()
-            ->map(function ($comment) use ($userId) {
-                $userReaction = $comment->reactions
-                    ->where('user_id', $userId)
-                    ->first();
-                return [
-                    'id' => $comment->id,
-                    'user' => [
-                        'id' => $comment->user->id,
-                        'name' => $comment->user->name,
-                    ],
-                    'body' => $comment->body,
-                    'created_at' => $comment->created_at->diffForHumans(),
-                    'reactions' => [
-                        'like' => $comment->reactions->where('type', 'like')->count(),
-                        'love' => $comment->reactions->where('type', 'love')->count(),
-                        'haha' => $comment->reactions->where('type', 'haha')->count(),
-                        'angry' => $comment->reactions->where('type', 'angry')->count(),
-                    ],
-                    'user_reacted' => $userReaction ? true : false,
-                    'user_reaction_type' => $userReaction ? $userReaction->type : null,
-                ];
-            });
-
-        return response()->json([
-            'comments' => $comments,
-        ], 200);
+        return Comment::paginate(20);
     }
 
 
@@ -109,11 +113,21 @@ class CommentController extends Controller
             ->where('comment_id', $commentId)
             ->first();
 
+
+
         if ($existingReaction) {
-            // Update existing reaction
-            $existingReaction->update([
-                'type' => $request->type,
-            ]);
+            // If the type is the same, delete the reaction
+            if ($existingReaction->type === $request->type) {
+                $existingReaction->delete();
+                return response()->json([
+                    'message' => 'Reaction removed successfully',
+                ], 200);
+            } else {
+                // Update existing reaction
+                $existingReaction->update([
+                    'type' => $request->type,
+                ]);
+            }
         } else {
             // Create new reaction
             CommentReaction::create([
@@ -192,8 +206,10 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return response()->json(null, 200);
     }
+
     public function removeReaction($commentId)
     {
         $reaction = CommentReaction::where('user_id', Auth::id())
