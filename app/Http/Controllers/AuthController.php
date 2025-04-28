@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Facades\DB;
@@ -62,10 +63,41 @@ class AuthController extends Controller
       public function logout(Request $request)
       {
         //   JWTAuth::invalidate(JWTAuth::getotp());
-          JWTAuth::invalidate(JWTAuth::getToken());
+        //   JWTAuth::invalidate(JWTAuth::getToken());
   
-          return response()->json(['message' => 'Successfully logged out']);
+        //   return response()->json(['message' => 'Successfully logged out']);
+        try {
+            // Check if token exists in the header
+            // $token = JWTAuth::getToken();
+            $user = JWTAuth::parseToken()->authenticate();
+
+    
+            if (!$user) {
+                return response()->json(['error' => 'Usern not found'], 401);
+            }
+    
+            // Invalidate the token (logout)
+            // JWTAuth::invalidate($token);
+            JWTAuth::invalidate(JWTAuth::getToken());    
+            return response()->json(['message' => 'Successfully logged out'], 200);
+    
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Token is invalid or already expired'], 401);
+        }
       }
+    // public function logout(Request $request)
+    // {
+    //     try {
+    //         JWTAuth::parseToken()->invalidate(); // Only uses Bearer token from header
+
+    //         return response()->json(['message' => 'Successfully logged out']);
+    //     } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+    //         return response()->json(['error' => 'Invalid token'], 401);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Token not provided or other error'], 400);
+    //     }
+    // }
+
 
 
       /** 17/2/2025
