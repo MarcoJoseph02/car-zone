@@ -77,9 +77,11 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'You must be logged in to cancel a booking.'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['message' => 'You must be logged in to Make a comment.'], 403);
+        // }
+        $userId = Auth::check() ? Auth::id() : null;
+
         $request->validate([
             'body' => 'required|string|max:500',
         ]);

@@ -97,8 +97,9 @@ Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'show
 Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
 
 
-Route::middleware('auth:api')->get('/comments', [CommentController::class, 'index']); // 📄 List comments
-Route::middleware('auth:api')->delete('/comments/{comment}/reaction', [CommentController::class, 'removeReaction']); // ❌ Remove reaction
-Route::middleware('auth:api')->post('/comments', [CommentController::class, 'update']); // Update comment
-Route::middleware('auth:api')->post('/comments', [CommentController::class, 'store']); // Create comment
-Route::middleware('auth.api')->post('/comments/{comment}/react', [CommentController::class, 'react']); // React to comment
+Route::get('/comments', [CommentController::class, 'index']); // 📄 List comments
+Route::delete('/comments/{comment}/reaction', [CommentController::class, 'removeReaction']); // ❌ Remove reaction
+Route::put('/comments/{comment}', [CommentController::class, 'update']); // Update comment
+Route::post('/comments/{comment}', [CommentController::class, 'destroy']); // Destroy comment
+Route::post('/comments', [CommentController::class, 'store']); // Create comment
+Route::post('/comments/{comment}/react', [CommentController::class, 'react']); // React to comment
