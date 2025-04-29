@@ -88,13 +88,24 @@ Route::post('/stripe/webhook', function (Request $request) {
 
 
 
-Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:api');
+// Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:api');
 
-Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->middleware('auth:api');
+// Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->middleware('auth:api');
 
-Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy'])->middleware('auth:api');
+// Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy'])->middleware('auth:api');
 
-Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
+// Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
+Route::middleware('auth:sanctum')->group(function () {
+    // Route::post('/bookings', [BookingController::class, 'store']); 
+    // Route::get('/bookings/my', [BookingController::class, 'userBookings']); 
+    // Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+    // Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy']);
+
+    Route::post('/bookings', [BookingController::class, 'store']);
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+    Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy']);
+    Route::get('/user/bookings', [BookingController::class, 'userBookings']);
+});
 
 
 Route::get('/comments', [CommentController::class, 'index']); // 📄 List comments

@@ -263,12 +263,7 @@ class BookingController extends Controller
         ]);
     }
 
-    private function getRefundPolicyMessage($hours)
-    {
-        if ($hours <= 24) return "Cancel now for 100% refund";
-        if ($hours <= 72) return "Cancel now for 8% refund (2% fee)";
-        return "Deposit already charged - 8% refund available";
-    }
+    
 
     public function userBookings()
     {
@@ -281,6 +276,13 @@ class BookingController extends Controller
     private function getHoursSinceStart(Booking $booking): int
     {
         return $booking->starts_at->diffInHours(now());
+    }
+    
+    private function getRefundPolicyMessage($hours)
+    {
+        if ($hours <= 24) return "Cancel now for 100% refund";
+        if ($hours <= 72) return "Cancel now for 8% refund (2% fee)";
+        return "Deposit already charged - 8% refund available";
     }
 
 }
