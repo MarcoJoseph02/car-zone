@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+// use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\CommentReaction;
 use Illuminate\Http\Request;
@@ -77,17 +78,12 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        // if (!auth()->check()) {
-        //     return response()->json(['message' => 'You must be logged in to Make a comment.'], 403);
-        // }
-        $userId = Auth::check() ? Auth::id() : null;
-
         $request->validate([
             'body' => 'required|string|max:500',
         ]);
 
         $comment = Comment::create([
-            'user_id' => Auth::id(),
+            'user_id' => $request->user_id,
             'body' => $request->body,
         ]);
 
@@ -102,7 +98,7 @@ class CommentController extends Controller
     public function react(Request $request, $commentId)
     {
         if (!auth()->check()) {
-            return response()->json(['message' => 'You must be logged in to cancel a booking.'], 403);
+            return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
         }
         $request->validate([
             'type' => 'required|string|in:like,love,haha,angry', // limit allowed types
@@ -174,9 +170,9 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
+        // }
 
         // Check if the logged-in user is the owner of the comment
         if ($comment->user_id !== Auth::id()) {
@@ -185,6 +181,8 @@ class CommentController extends Controller
 
         // Validate the new body
         $request->validate([
+            'user_id' => Auth::id(),
+            'comment_id'=> 'required|exists:comments,id',  
             'body' => 'required|string|max:500',
         ]);
 
@@ -196,6 +194,7 @@ class CommentController extends Controller
         return response()->json([
             'message' => 'Comment updated successfully.',
             'comment' => $comment,
+            'user_id' => auth()->id(), // This is the safe and real user
         ], 200);
     }
 
