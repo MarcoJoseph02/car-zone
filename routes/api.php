@@ -12,6 +12,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\APIs\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentReactionController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -111,8 +112,12 @@ Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'show
 Route::get('/user/bookings', [BookingController::class, 'userBookings']);
 
 Route::get('/comments', [CommentController::class, 'index']); // 📄 List comments
-Route::delete('/comments/{comment}/reaction', [CommentController::class, 'removeReaction']); // ❌ Remove reaction
 Route::put('/comments/{comment}', [CommentController::class, 'update']); // Update comment
-Route::post('/comments/{comment}', [CommentController::class, 'destroy']); // Destroy comment
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy']); // Destroy comment
 Route::post('/comments', [CommentController::class, 'store']); // Create comment
-Route::post('/comments/{comment}/react', [CommentController::class, 'react']); // React to comment
+
+
+// Route::post('/comments/{comment}/react', [CommentController::class, 'react']); // React to comment
+// Route::delete('/comments/{comment}/reaction', [CommentReactionController::class, 'destroy']); // ❌ Remove reaction
+
+Route::resource('commentReactions', CommentReactionController::class);
