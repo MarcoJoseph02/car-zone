@@ -11,11 +11,19 @@ class Booking extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'car_id',
         'deposit_amount',
+        'payment_intent_id',
         'deposit_paid',
         'deposit_charged_at',
+        'status',
+        'cancelled_at',
         'refund_processed',
         'refund_amount',
+        'maintenance_reminder',
+        'maintenance_type',
+        'starts_at',
+        'ends_at',
     ];
 
     public function user(): BelongsTo

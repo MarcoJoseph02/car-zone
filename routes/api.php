@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIs\BookingController;
+// use App\Http\Controllers\APIs\CommentController;
 use App\Http\Controllers\AuthController;
 // use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\BrandController;
@@ -73,10 +74,10 @@ Route::post('/cars/{car}/sell', [CarController::class, 'sell'])->name('cars.sell
 // Handle successful payments
 Route::post('/stripe/webhook', function (Request $request) {
     $payload = $request->all();
-    
+
     if ($payload['type'] === 'payment_intent.succeeded') {
         $paymentIntent = $payload['data']['object'];
-        
+
         Booking::where('payment_intent_id', $paymentIntent['id'])
             ->update([
                 'status' => 'active',
@@ -88,14 +89,26 @@ Route::post('/stripe/webhook', function (Request $request) {
 
 
 
-Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:api');
+// Route::post('/bookings', [BookingController::class, 'store'])->middleware('auth:api');
 
-Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->middleware('auth:api');
+// Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->middleware('auth:api');
 
-Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy'])->middleware('auth:api');
+// Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy'])->middleware('auth:api');
 
-Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
+// Route::get('/my-bookings', [BookingController::class, 'userBookings'])->middleware('auth:api');
+Route::middleware('auth:api')->group(function () {
+    // Route::post('/bookings', [BookingController::class, 'store']); 
+    // Route::get('/bookings/my', [BookingController::class, 'userBookings']); 
+    // Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+    // Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy']);
 
+
+});
+
+Route::post('/bookings', [BookingController::class, 'store']);
+Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+Route::get('/bookings/{booking}/refund-policy', [BookingController::class, 'showRefundPolicy']);
+Route::get('/user/bookings', [BookingController::class, 'userBookings']);
 
 Route::get('/comments', [CommentController::class, 'index']); // 📄 List comments
 Route::delete('/comments/{comment}/reaction', [CommentController::class, 'removeReaction']); // ❌ Remove reaction

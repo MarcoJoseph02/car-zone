@@ -12,8 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
 use App\Notifications\BookingCancelled;
-
-
+use Stripe\PaymentIntent;
+use Stripe\Refund;
 
 class BookingController extends Controller
 {
@@ -45,7 +45,7 @@ class BookingController extends Controller
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $paymentIntent = \Stripe\PaymentIntent::create([
                 'amount' => $depositAmount * 100,
-                'currency' => 'usd',
+                'currency' => 'egp',
                 'capture_method' => 'manual',
                 'metadata' => [
                     'user_id' => auth()->id(),
@@ -72,6 +72,7 @@ class BookingController extends Controller
                 'payment_intent_client_secret' => $paymentIntent->client_secret,
                 'deposit_amount' => $depositAmount,
                 'booking_id' => $booking->id,
+                'clientSecret' => $paymentIntent->client_secret,
             ], 201);
         });
     }
@@ -129,7 +130,7 @@ class BookingController extends Controller
     }
 
 
-    
+
     // Refund the booking
     // public function processRefund($bookingId)//4klha mlha4 lazma
     // {
@@ -171,10 +172,14 @@ class BookingController extends Controller
         if ($booking->user_id !== auth()->id()) {
             return response()->json(['message' => 'Unauthorized: You can only cancel your own bookings.'], 403);
         }
-    
+
         if ($booking->status === 'completed') {
             return response()->json(['message' => 'This booking is already completed and cannot be cancelled.'], 400);
         }
+        // if (in_array($booking->status, ['completed', 'cancelled'])) {
+        //     return response()->json(['message' => 'Booking already ' . $booking->status . '.'], 400);
+        // }
+
         if ($booking->status === 'cancelled') {
             return response()->json(['message' => 'Booking already cancelled'], 400);
         }
@@ -208,8 +213,8 @@ class BookingController extends Controller
 
         // Send email notification
         //  logger(auth()->user());
-         $user = User::find(auth()->id());
-         $user->notify(new BookingCancelled($booking));
+        $user = User::find(auth()->id());
+        $user->notify(new BookingCancelled($booking));
 
         // if ($user && method_exists($user, 'notify')) {
         //     $user->notify(new BookingCancelled($booking));
@@ -226,16 +231,66 @@ class BookingController extends Controller
         ]);
     }
 
-    private function processStripeRefund($booking, $amount)
+    public function processStripeRefund(Booking $booking, float $amount)
     {
-        if ($amount <= 0 || !$booking->payment_intent_id) return;
+        if (!$booking->payment_intent_id) {
+            logger()->warning("Missing payment_intent_id for booking ID: {$booking->id}");
+            return response()->json([
+                'message' => 'Refund failed: missing payment intent',
+            ], 400);
+        }
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        \Stripe\Refund::create([
-            'payment_intent' => $booking->payment_intent_id,
-            'amount' => $amount * 100,
+        if ($amount <= 0) {
+            return response()->json([
+                'message' => 'Refund failed: invalid refund amount',
+            ], 400);
+        }
+
+        Stripe::setApiKey(config('services.stripe.secret')); // ✅ config preferred
+
+        try {
+            $refund = Refund::create([
+                'payment_intent' => $booking->payment_intent_id,
+                'amount' => intval(round($amount * 100)), // safer
+            ]);
+
+            return response()->json([
+                'message' => 'Refund successful',
+                'refund' => $refund,
+            ]);
+        } catch (\Exception $e) {
+            logger()->error("Refund failed: " . $e->getMessage());
+            return response()->json([
+                'message' => 'Refund failed',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+    public function createPaymentIntent(Request $request) //new
+    {
+        $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
+            'amount' => 'required|numeric|min:1',
+        ]);
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $paymentIntent = PaymentIntent::create([
+            'amount' => intval($request->amount * 100), // amount in cents
+            'currency' => 'egp',
+            'metadata' => [
+                'booking_id' => $request->booking_id,
+            ],
+        ]);
+
+        return response()->json([
+            'clientSecret' => $paymentIntent->client_secret,
         ]);
     }
+
 
     /**
      * Display the specified resource.
@@ -263,12 +318,7 @@ class BookingController extends Controller
         ]);
     }
 
-    private function getRefundPolicyMessage($hours)
-    {
-        if ($hours <= 24) return "Cancel now for 100% refund";
-        if ($hours <= 72) return "Cancel now for 8% refund (2% fee)";
-        return "Deposit already charged - 8% refund available";
-    }
+
 
     public function userBookings()
     {
@@ -283,4 +333,10 @@ class BookingController extends Controller
         return $booking->starts_at->diffInHours(now());
     }
 
+    private function getRefundPolicyMessage($hours)
+    {
+        if ($hours <= 24) return "Cancel now for 100% refund";
+        if ($hours <= 72) return "Cancel now for 8% refund (2% fee)";
+        return "Deposit already charged - 8% refund available";
+    }
 }
