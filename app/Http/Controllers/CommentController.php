@@ -95,20 +95,21 @@ class CommentController extends Controller
 
 
 
-    public function react(Request $request, $commentId)
+    public function react(Request $request, $comment)
     {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['message' => 'You must be logged in to perform this action.'], 403);
+        // }
         $request->validate([
+
             'type' => 'required|string|in:like,love,haha,angry', // limit allowed types
         ]);
 
-        $comment = Comment::findOrFail($commentId);
+        $comment = Comment::findOrFail($comment);
 
         // Check if user already reacted
         $existingReaction = CommentReaction::where('user_id', Auth::id())
-            ->where('comment_id', $commentId)
+            ->where('comment_id', $comment)
             ->first();
 
 
@@ -129,8 +130,8 @@ class CommentController extends Controller
         } else {
             // Create new reaction
             CommentReaction::create([
-                'user_id' => Auth::id(),
-                'comment_id' => $commentId,
+                'user_id' => $request->user_id,
+                'comment_id' => $comment->id,
                 'type' => $request->type,
             ]);
         }
@@ -175,14 +176,14 @@ class CommentController extends Controller
         // }
 
         // Check if the logged-in user is the owner of the comment
-        if ($comment->user_id !== Auth::id()) {
-            return response()->json(['message' => 'You are not authorized to edit this comment.'], 403);
-        }
+        // if ($comment->user_id !== Auth::id()) {
+        //     return response()->json(['message' => 'You are not authorized to edit this comment.'], 403);
+        // }
 
         // Validate the new body
         $request->validate([
-            'user_id' => Auth::id(),
-            'comment_id'=> 'required|exists:comments,id',  
+            'user_id' => 'required|exists:users,id',
+            // 'comment_id'=> 'required|exists:comments,id',  
             'body' => 'required|string|max:500',
         ]);
 
@@ -211,22 +212,5 @@ class CommentController extends Controller
         return response()->json(null, 200);
     }
 
-    public function removeReaction($commentId)
-    {
-        $reaction = CommentReaction::where('user_id', Auth::id())
-            ->where('comment_id', $commentId)
-            ->first();
-
-        if ($reaction) {
-            $reaction->delete();
-
-            return response()->json([
-                'message' => 'Reaction removed successfully',
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'No reaction found',
-        ], 404);
-    }
+    
 }
