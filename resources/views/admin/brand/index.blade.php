@@ -30,7 +30,7 @@
                                     <tr class="text-center">
                                         {{-- <td>{{ $row->image ?? ''}}</td> --}}
                                         <td>
-                                            <img src="{{ $row->getFirstMediaUrl('brand_image') }}" {{--alt="Brand Image"--}}>
+                                            <img src="{{ $row->getFirstMediaUrl('brand_image') }}" width="100" height="100" alt="brand image">
                                         </td>
                                         <td>{{ $row->name ?? '' }}</td>
                                         <td class="align-middle text-center pt-5">

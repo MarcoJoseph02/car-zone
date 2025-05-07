@@ -23,6 +23,11 @@ class CarResource extends JsonResource
             'year'=>$this->category_id,
             'price'=>$this->category_id,
             'description'=>$this->category_id,
+            'main_image'=>$this->getFirstMediaUrl('mainImage'),
+            'images'=>$this->getMedia('gallery')->map(function ($item) {
+                return $item->getFullUrl();
+            }),
+            
         ];
     }
 }
