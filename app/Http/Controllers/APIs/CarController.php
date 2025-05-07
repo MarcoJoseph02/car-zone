@@ -53,7 +53,7 @@ class CarController extends Controller
     public function index()
     {
 
-        return Car::paginate(20);
+        return  CarResource::collection(Car::all());
     }
 
 

@@ -79,7 +79,7 @@
                             @php
                             $mediaItems = $car->getMedia("gallery");
                             $url = $car->getFirstMediaUrl("gallery");
-                            dd($car, $mediaItems, $url);
+                            //dd($car, $mediaItems, $url);
                             //dd($mediaItems);
                             //dd($url);
                             @endphp
@@ -88,6 +88,7 @@
                                     <th>gallery</th>
                                     <td>
                                         <img src="{{ $image->getUrl()}}" alt="" width="100">
+                                        {{-- dd($image->getUrl()); --}}
                                     </td>                                     
                                 </tr>
                                 @endforeach
