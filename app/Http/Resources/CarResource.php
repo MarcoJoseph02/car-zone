@@ -15,19 +15,37 @@ class CarResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'supplier_id'=> $this->supplier_id,
-            'category_id'=>$this->category_id,
-            'brand_id'=>$this->category_id,
             'id' => $this->id,
-            'model'=>$this->category_id,
-            'year'=>$this->category_id,
-            'price'=>$this->category_id,
-            'description'=>$this->category_id,
-            'main_image'=>$this->getFirstMediaUrl('mainImage'),
-            'images'=>$this->getMedia('gallery')->map(function ($item) {
+            'supplier_id' => $this->supplier_id,
+            'category_id' => $this->category_id,
+            'brand_id' => $this->brand_id,
+            'branch_id' => $this->branch_id,
+            'model' => $this->model,
+            'year' => $this->year,
+            'user_id' => $this->user_id,
+            'is_sold' => $this->is_sold,
+            'is_booked' => $this->is_booked,
+            'price' => $this->price,
+            'doors' => $this->doors,
+            'acceleration' => $this->acceleration,
+            'top_speed' => $this->top_speed,
+            'fuel_efficiency' => $this->fuel_efficiency,
+            'color' => $this->color,
+            'engine_type' => $this->engine_type,
+            'engine_power' => $this->engine_power,
+            'engine_cylinder' => $this->engine_cylinder,
+            'engine_cubic_capacity_type' => $this->engine_cubic_capacity_type,
+            'transmission' => $this->transmission,
+            'features' => $this->features,
+            'performance' => $this->performance,
+            'safety' => $this->safety,
+            'is_available' => $this->is_available
+            ,
+            'main_image' => $this->getFirstMediaUrl('mainImage'),
+            'images' => $this->getMedia('gallery')->map(function ($item) {
                 return $item->getFullUrl();
             }),
-            
+
         ];
     }
 }
