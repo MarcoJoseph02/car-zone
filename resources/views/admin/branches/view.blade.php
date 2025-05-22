@@ -35,8 +35,12 @@
                             </tr>
                             
                             <tr>
-                                <th>IMAGE</th>
-                                <td>{{ $branch->image }}</td>
+                                <th>PHONE</th>
+                                <td>{{ $branch->phone_no }}</td>
+                            </tr>
+                            <tr>
+                                <th>LINK</th>
+                                <td>{{ $branch->link }}</td>
                             </tr>
                            
                                                   

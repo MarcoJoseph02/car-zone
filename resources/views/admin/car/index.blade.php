@@ -188,8 +188,14 @@
                                                 </a>
                                                 @if(! $row->is_sold)
                                                 <a class="btn btn-xs btn-info me-1"
-                                                    href="{{ route('admin.car.getSellPage', $row->id) }}" title="Sell">
+                                                    href="{{ route('admin.car.getSellPage', $row->id) }}" title="Book">
                                                     <i class="fas fa-car"></i> <!-- Changed icon -->
+                                                </a>
+                                                @endif
+                                                @if(! $row->is_booked)
+                                                <a class="btn btn-xs btn-info me-1"
+                                                    href="{{ route('admin.car.getSellPage', $row->id) }}" title="Sell">
+                                                    <i class="fas fa-car-side"></i> <!-- Changed icon -->
                                                 </a>
                                                 @endif
                                                 {{-- <i class="fas fa-car"></i> <!-- Simple car icon -->

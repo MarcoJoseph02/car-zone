@@ -211,16 +211,10 @@ class BookingController extends Controller
             'refund_amount' => $refundAmount,
         ]);
 
-        // Send email notification
-        //  logger(auth()->user());
         $user = User::find(auth()->id());
         $user->notify(new BookingCancelled($booking));
 
-        // if ($user && method_exists($user, 'notify')) {
-        //     $user->notify(new BookingCancelled($booking));
-        // } else {
-        //     logger('Notify method not found or user is null');
-        // }
+       
 
 
         return response()->json([
@@ -337,6 +331,6 @@ class BookingController extends Controller
     {
         if ($hours <= 24) return "Cancel now for 100% refund";
         if ($hours <= 72) return "Cancel now for 8% refund (2% fee)";
-        return "Deposit already charged - 8% refund available";
+        return "No refund - more than 72 hours passed";
     }
 }

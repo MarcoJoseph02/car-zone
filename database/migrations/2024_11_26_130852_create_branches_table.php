@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string('phone_no');
-            $table->string('location');
+            $table->float('latitude', 10, 6)->nullable();
+            $table->float('longitude', 10, 6)->nullable();
+            $table->string('link');
             $table->timestamps();
         });
     }
