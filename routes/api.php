@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 // use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\APIs\CarController;
+use App\Http\Controllers\APIs\BranchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\JobController;
@@ -54,6 +55,7 @@ Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']
 
 Route::resource('users', UserController::class);
 Route::resource('brand', BrandController::class);
+Route::resource('branches', BranchController::class);
 Route::resource('events', EventController::class);
 Route::resource('cars', carController::class);
 Route::resource('category', CategoryController::class);

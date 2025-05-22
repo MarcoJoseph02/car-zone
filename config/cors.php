@@ -17,7 +17,8 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'storage/*'],
 
-    'allowed_methods' => ['http://localhost:4200'],
+    // 'allowed_methods' => ['http://localhost:4200'],
+    'allowed_methods' => ['*'],
 
     'allowed_origins' => ['*'],
 
@@ -29,6 +30,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true, //false
+    'supports_credentials' => false, //false
 
 ];
