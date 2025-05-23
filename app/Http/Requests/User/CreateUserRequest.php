@@ -18,8 +18,8 @@ class CreateUserRequest extends FormRequest
         return [            // Just validate
             'fname' => ["required" , "min:2"],
             'lname'  => ["required" , "min:2"],
-            'email'  => ["required" , "min:2" , "unique:users,email" ],
-            'password'  => ["required" , "min:2"],
+            'email'  => ["required" , "min:2" , "email", "unique:users,email" ],
+            'password'  => ["required" , "min:8" , "regex:/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$"],
             'phone_no'  => ["required" , "min:2" , "unique:users,phone_no"],
             'address'  => ["required" , "min:2"],
         ];

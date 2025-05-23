@@ -1,5 +1,6 @@
 @extends('layouts.admin_layout')
 
+
 @section('title', 'Book Car')
 
 @section('content')
@@ -9,6 +10,7 @@
                 <h5 class="mb-0">Book Car - {{ $car->model }}</h5>
             </div>
             <div class="card-body">
+
                 <form method="POST" action="{{ route('admin.car.processBook', $car->id) }}">
                     @csrf
                     <div class="form-group">
@@ -25,6 +27,7 @@
                         </select>
                     </div>
                     <div class="form-group mt-3">
+
                         <button type="submit" class="btn btn-success">Confirm Book</button>
                         <a href="{{ route('admin.car.index') }}" class="btn btn-danger">Cancel</a>
                     </div>

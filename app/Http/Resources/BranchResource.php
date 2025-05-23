@@ -16,8 +16,13 @@ class BranchResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'phone_no' => $this->phone_no ,
-            'location' => $this->location ,
+            'name' => $this->name,
+            'phone_no' => $this->phone_no,
+            'position' => [
+                'lat' => $this->latitude,
+                'lng' => $this->longitude,
+            ],
+            'link' => $this->link,
         ];
     }
 }

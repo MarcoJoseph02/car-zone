@@ -21,15 +21,17 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Phone Number</th>
-                                <th class="text-center">Location</th>
-                                <th class="text-center">Actions</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Link</th>
+                                <th class="text-center">Ation</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($rows as $row)
                                 <tr class="text-center">
                                     <td>{{ $row->phone_no ?? ''}}</td>
-                                    <td>{{ $row->location ?? ''}}</td>
+                                    <td>{{ $row->name ?? ''}}</td>
+                                    <td>{{ $row->link ?? ''}}</td>
                                     <td class="align-middle text-center pt-5">
                                         <div class="row">
                                             <div class="col-md-4 col-sm-4 col-xs-4 form-group">

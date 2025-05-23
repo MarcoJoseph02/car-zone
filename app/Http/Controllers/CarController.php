@@ -110,29 +110,29 @@ class CarController extends Controller
 
 
 
-    public function processSell_2(Request $request, $carId)
-    {
-        $car = Car::findOrFail($carId);
+    // public function processSell_2(Request $request, $carId)
+    // {
+    //     $car = Car::findOrFail($carId);
 
-        // Validate the selected user
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-        ]);
+    //     // Validate the selected user
+    //     $request->validate([
+    //         'user_id' => 'required|exists:users,id',
+    //     ]);
 
-        // Assign the car to the new owner
-        $car->user_id = $request->user_id;
-        $car->is_sold = true; // Update status to sold
-        $car->save();
-        $id = $request->user_id;
-        $userName = ModelsUser::find($id)->name;
+    //     // Assign the car to the new owner
+    //     $car->user_id = $request->user_id;
+    //     $car->is_sold = true; // Update status to sold
+    //     $car->save();
+    //     $id = $request->user_id;
+    //     $userName = ModelsUser::find($id)->name;
 
-        // return view("admin.car.idex","car sold to {$userName}");
-        flash()->success("Sold Succefully");
-        return redirect()->route("admin.car.index");
+    //     // return view("admin.car.idex","car sold to {$userName}");
+    //     flash()->success("Sold Succefully");
+    //     return redirect()->route("admin.car.index");
 
 
-        //return response()->json(['message' => 'Car sold successfully!']);
-    }
+    //     //return response()->json(['message' => 'Car sold successfully!']);
+    // }
     public function processSell(Request $request, $carId)
     {
         $car = Car::findOrFail($carId);

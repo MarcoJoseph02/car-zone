@@ -18,7 +18,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'fname' => ["required" , "min:2"],
             'lname'  => ["required" , "min:2"],
-            'email'  => ["required" , "min:2"],
+            'email'  => ["required" , "min:8", "regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/"],
             'phone_no'  => ["required" , "min:2"],
             'address'  => ["required" , "min:2"],
         ];
