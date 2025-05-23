@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\User;
+use App\Models\Booking;
 use App\Models\Reminder;
 use App\Models\User as ModelsUser;
 use Carbon\Carbon;
@@ -174,6 +175,27 @@ class CarController extends Controller
 
         return view("admin.car.sell", ['car' => $car, 'users' => $users]);
         // return view("admin.car.sell", compact('car','users'));
+    }
+
+    public function getBookPage(Car $car)
+    {
+        $users = ModelsUser::all();
+        return view("admin.car.book", ['car' => $car, 'users' => $users]);
+    }
+
+    public function processBook(Request $request, $carId)
+    {
+        $car = Car::findOrFail($carId);
+        $car->is_booked = true;
+        $car->save();
+        $booking = Booking::create([
+            'user_id' => $request->user_id,
+            'car_id' => $carId,
+            'deposit_amount' => $request->amount,
+            'status' => 'Booked',
+        ]);
+        flash()->success("Booked Succefully");
+        return redirect()->route("admin.car.index");
     }
 
 

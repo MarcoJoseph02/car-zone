@@ -48,6 +48,8 @@ Route::group(
         Route::resource("/branch" , BranchController::class);
         Route::resource("/supplier" , SupplierController::class);
         Route::resource("/car" , CarController::class);
+        Route::get('/cars/{car}/book', [CarController::class, 'getBookPage'])->name('car.getBookPage');
+        Route::post('/car/{car}/book', [CarController::class, 'processBook'])->name('car.processBook');
         Route::get('/cars/{car}/sell', [CarController::class, 'getSellPage'])->name('car.getSellPage');
         Route::post('/car/{car}/sell', [CarController::class, 'processSell'])->name('car.processSell');
         
