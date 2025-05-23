@@ -21,9 +21,6 @@ class UpdateCarRequest extends FormRequest
             'brand_id'=>['required','min:1'],
             'model'=>['required'],
             'year'=>['required'],
-            'user_id'=>['nullable'],
-            'is_sold'=>[],
-            'is_booked'=>[],
             'price'=>['required','min:1','numeric'],
             'doors'=>['required','min:1','numeric'],
             'acceleration'=>['required','min:1','numeric'],
@@ -41,8 +38,7 @@ class UpdateCarRequest extends FormRequest
             'features'=>['required','min:10'],
             'performance'=>['required','min:10'],
             'safety'=>['required','min:10'],
-            'is_available'=>['required'],
-
+           
         ];
     }
 }

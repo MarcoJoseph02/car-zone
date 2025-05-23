@@ -242,12 +242,11 @@ class CarController extends Controller
         //     }
         // }
         if ($request->hasFile('gallery')) {         
-            $car->clearMediaCollection('gallery'); // ❌ Remove old gallery images
-            foreach ($request->file('gallery') as $image) { // ✅ Add new gallery images
+            $car->clearMediaCollection('gallery'); 
+            foreach ($request->file('gallery') as $image) { 
                 $car->addMedia($image)->toMediaCollection('gallery');
             }
         }
-        dd($data);
         $car->update($data);
         return redirect()->route("admin.car.index");
     }
