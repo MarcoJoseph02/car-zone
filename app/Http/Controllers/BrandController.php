@@ -44,7 +44,9 @@ class BrandController extends Controller
      */
     public function store(CreateBrandRequest $request)
     {
+         
         $data = $request->validated();
+        // return $data;
         $brand = Brand::create($data);
         if ($request->hasFile('brand_image')) { //name = images
 
