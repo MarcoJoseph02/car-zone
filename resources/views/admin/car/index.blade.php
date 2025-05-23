@@ -192,10 +192,12 @@
                                                     <i class="fas fa-car"></i> <!-- Changed icon -->
                                                 </a>
                                                 @endif
+
+
                                                 @if(! $row->is_booked)
                                                 <a class="btn btn-xs btn-info me-1"
-                                                    href="{{ route('admin.car.getSellPage', $row->id) }}" title="Sell">
-                                                    <i class="fas fa-car-side"></i> <!-- Changed icon -->
+                                                    href="{{ route('admin.car.getBookPage', $row->id) }}" title="Book">
+                                                    <i class="fas fa-book"></i> <!-- Changed icon -->
                                                 </a>
                                                 @endif
                                                 {{-- <i class="fas fa-car"></i> <!-- Simple car icon -->
