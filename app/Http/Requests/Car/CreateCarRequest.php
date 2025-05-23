@@ -18,6 +18,7 @@ class CreateCarRequest extends FormRequest
             'supplier_id'=>['required','min:1'],
             'category_id'=>['required','min:1'],
             'brand_id'=>['required','min:1'],
+            'branch_id'=>['required','min:1'],
             'model'=>['required'],
             'year'=>['required'],
             'user_id'=>['nullable'],

@@ -227,6 +227,27 @@ class CarController extends Controller
     public function update(UpdateCarRequest $request, Car $car)
     {
         $data = $request->validated();
+        if ($request->hasFile('main')) { //name = images
+
+            // $image = $request->file('main');
+            $car->clearMediaCollection('main');
+            // $car->addMedia($image)->toMediaCollection('mainImage');
+            $car->addMedia($request->file('main'))->toMediaCollection('mainImage');
+        }
+
+        // if ($request->hasFile('gallery')) { //name = images
+
+        //     foreach ($request->file('gallery') as $image) {
+        //         $car->addMedia($image)->toMediaCollection('gallery');
+        //     }
+        // }
+        if ($request->hasFile('gallery')) {         
+            $car->clearMediaCollection('gallery'); // ❌ Remove old gallery images
+            foreach ($request->file('gallery') as $image) { // ✅ Add new gallery images
+                $car->addMedia($image)->toMediaCollection('gallery');
+            }
+        }
+        dd($data);
         $car->update($data);
         return redirect()->route("admin.car.index");
     }

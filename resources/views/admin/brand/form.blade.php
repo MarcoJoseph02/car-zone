@@ -36,3 +36,9 @@
     //'value' => $row->brand_image  ?? null,
     'attributes' => $imageAttributes
 ])
+{{-- @if ($row?->getFirstMediaUrl('brand_image'))
+    <div class="col-md-12 mt-2">
+        <label>Current Image:</label><br>
+        <img src="{{ $row->getFirstMediaUrl('brand_image') }}" alt="Brand Image" style="max-width: 150px; max-height: 150px;">
+    </div>
+@endif --}}

@@ -47,7 +47,7 @@ class BrandController extends Controller
         $data = $request->validated();
         $brand = Brand::create($data);
         if ($request->hasFile('brand_image')) { //name = images
-            
+
             $image = $request->file('brand_image');
             $brand->addMedia($image)->toMediaCollection('brand_image');
             //dd($brand->getFirstMediaUrl('brand_image'));
@@ -91,7 +91,15 @@ class BrandController extends Controller
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
         $data = $request->validated();
+        
+        if ($request->hasFile('brand_image')) {
+            // Optional: delete old image
+            $brand->clearMediaCollection('brand_image');
+            // Add new image
+            $brand->addMedia($request->file('brand_image'))->toMediaCollection('brand_image');
+        } 
         $brand->update($data);
+
         return redirect()->route("admin.brand.index");
     }
 
