@@ -19,7 +19,7 @@ class UpdateUserRequest extends FormRequest
             'fname' => ["required" , "min:2"],
             'lname'  => ["required" , "min:2"],
             'email'  => ["required" , "min:8",  "email"],
-            'password'  => ["required" , "min:8" ],
+            // 'password'  => ["required" , "min:8" ],
             'phone_no'  => ["required" , "min:2"],
             'address'  => ["required" , "min:2"],
         ];
