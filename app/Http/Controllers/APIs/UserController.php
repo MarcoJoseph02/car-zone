@@ -64,6 +64,8 @@ class UserController extends Controller
         $user->update($data);
         return  new UserResource($user);
     }
+
+    
     public function updateUserPass(UpdateUserPassRequest $request, User $user)
     {
         $data = $request->validated();
