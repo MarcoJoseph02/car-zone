@@ -17,9 +17,9 @@ class UpdateEventRequest extends FormRequest
     {
         return [
             'event_name' => ["required", "string" ,"max:255"],
-            'image' =>["nullable" ,"image","mimes:jpeg,png,jpg,gif,svg","max:2048"] ,
-            'event_date' =>["required"] ,
-            'event_time' =>["required"] ,
+            // 'image' =>["nullable" ,"image","mimes:jpeg,png,jpg,gif,svg","max:2048"] ,
+            'event_date' => ['required', 'date'],
+            'event_time' => ['required', 'date_format:H:i'],
             'event_location' =>["required","max:255"] ,
             'event_description' =>["required"] ,
             'content' =>["nullable"] ,

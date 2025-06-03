@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('event_name');
-            $table->string('image')->nullable();
-            $table->string('event_date');
-            $table->date('event_time');
+            // $table->string('image')->nullable();
+            $table->date('event_date')->nullable();
+            $table->time('event_time')->nullable();
             $table->string('event_location');
             $table->string('event_description');
             $table->string('event_status')->default('active');// active, inactive, deleted

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Event\CreateEventRequest;
 use App\Http\Requests\Event\CreteEvent;
+use App\Http\Requests\Event\UpdateEventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class EventController extends Controller
      */
     public function store(CreateEventRequest $request)
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $event = Event::create($data);
         return new EventResource($event);
     }
@@ -63,9 +64,9 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(UpdateEventRequest $request, Event $event)
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $event->update($data);
         return new EventResource($event);
     }

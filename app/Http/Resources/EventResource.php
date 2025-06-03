@@ -17,13 +17,13 @@ class EventResource extends JsonResource
         return [
             'id' => $this->id,
             'event_name'=> $this->event_name,
-            'image'=> $this->image,
+            // 'image'=> $this->image,
             'event_date'=> $this->event_date,
-            'event_time'=> $this->event_date,
-            'event_location'=> $this->event_date,
-            'event_description'=> $this->event_date,
-            'event_status'=> $this->event_date,
-            'content'=> $this->event_date,
+            'event_time'=> $this->event_time,
+            'event_location'=> $this->event_location,
+            'event_description'=> $this->event_description,
+            'event_status'=> $this->event_status,
+            'content'=> $this->content,
         ];
     }
 }
