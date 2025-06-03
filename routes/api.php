@@ -61,6 +61,8 @@ Route::resource('cars', carController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('order', OrderController::class);
 
+Route::put('/users/{user}/password', [UserController::class, 'updateUserPass']);
+
 //pass
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
