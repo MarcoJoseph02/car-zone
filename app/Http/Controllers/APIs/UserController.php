@@ -4,9 +4,11 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserPassRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -19,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::paginate(20)) ;
+        return UserResource::collection(User::paginate(20));
     }
 
 
@@ -58,8 +60,16 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $data= $request->validated();
+        $data = $request->validated();
         $user->update($data);
+        return  new UserResource($user);
+    }
+    public function updateUserPass(UpdateUserPassRequest $request, User $user)
+    {
+        $data = $request->validated();
+        $user->update([
+            'password' => Hash::make($data['password'])
+        ]);
         return  new UserResource($user);
     }
 
@@ -72,6 +82,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json(null , 200);
+        return response()->json(null, 200);
     }
 }

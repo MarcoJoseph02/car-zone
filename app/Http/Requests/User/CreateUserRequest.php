@@ -16,12 +16,12 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [            // Just validate
-            'fname' => ["required" , "min:2"],
-            'lname'  => ["required" , "min:2"],
-            'email'  => ["required" , "min:2" , "email", "unique:users,email" ],
-            'password'  => ["required" , "min:8" ],
-            'phone_no'  => ["required" , "min:2" , "unique:users,phone_no"],
-            'address'  => ["required" , "min:2"],
+            'fname' => ["required", "min:2"],
+            'lname'  => ["required", "min:2"],
+            'email'  => ["required", "min:2", "email", "unique:users,email"],
+            'password'  => ["required", "min:8"],
+            'phone_no'  => ["required", "min:2", "unique:users,phone_no"],
+            'address'  => ["required", "min:2"],
         ];
     }
 }
