@@ -23,7 +23,9 @@ class UpdateEventRequest extends FormRequest
             'event_location' =>["required","max:255"] ,
             'event_description' =>["required"] ,
             'event_status' =>["required"] ,
-            'content' =>["nullable"] ,
+            'content' =>["required"] ,
+            'event_images' => ['nullable', 'array'],
+            'event_images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 }

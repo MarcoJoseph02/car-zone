@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-
+https://www.postman.com/workspace/CarZone-isa-Workspace~bb0078a2-ad39-4487-81ce-025f7ef46657/request/39813466-ed93c62e-ba6a-4866-8aaa-6093b2f76ac1
 class Car extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;

@@ -8,6 +8,8 @@ use App\Http\Requests\Event\UpdateEventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 // use App\Http\Controllers\CreateEventRequest;
 
 class EventController extends Controller
@@ -42,6 +44,11 @@ class EventController extends Controller
     {
         $data = $request->validated();
         $event = Event::create($data);
+        if ($request->hasFile('event_images')) { // Changed 'gallery' to 'images' for consistency
+            foreach ($request->file('event_images') as $image) {
+                $event->addMedia($image)->toMediaCollection('event_image');
+            }
+        }
         return new EventResource($event);
     }
 
@@ -67,7 +74,17 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, Event $event)
     {
         $data = $request->validated();
+        //  dd($data);
+        //  dd($request);
         $event->update($data);
+        // dd($event);
+        if ($request->hasFile('event_images')) { // Changed 'gallery' to 'images' for consistency
+            $event->clearMediaCollection('event_images'); // Clear existing images if any
+            foreach ($request->file('event_images') as $image) {
+                // $event->addMedia($image)->toMediaCollection('event_image');
+                $event->addMedia($image)->toMediaCollection('event_image');
+            }
+        }       
         return new EventResource($event);
     }
 

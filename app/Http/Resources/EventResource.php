@@ -16,14 +16,18 @@ class EventResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'event_name'=> $this->event_name,
+            'event_name' => $this->event_name,
             // 'image'=> $this->image,
-            'event_date'=> $this->event_date,
-            'event_time'=> $this->event_time,
-            'event_location'=> $this->event_location,
-            'event_description'=> $this->event_description,
-            'event_status'=> $this->event_status,
-            'content'=> $this->content,
+            'event_date' => $this->event_date,
+            'event_time' => $this->event_time,
+            'event_location' => $this->event_location,
+            'event_description' => $this->event_description,
+            'event_status' => $this->event_status,
+            'content' => $this->content,
+            'images' => $this->getMedia('event_image')->map(function ($media) {
+                return $media->getUrl();
+            }),
+            'updated_at' => $this->updated_at,
         ];
     }
 }
