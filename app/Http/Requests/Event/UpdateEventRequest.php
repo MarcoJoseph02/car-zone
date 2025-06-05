@@ -22,6 +22,7 @@ class UpdateEventRequest extends FormRequest
             'event_time' => ['required', 'date_format:H:i'],
             'event_location' =>["required","max:255"] ,
             'event_description' =>["required"] ,
+            'event_status' =>["required"] ,
             'content' =>["nullable"] ,
         ];
     }
