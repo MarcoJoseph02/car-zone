@@ -8,9 +8,13 @@ use App\Models\CommentReaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CommentReactionController as React;
+use App\Http\Resources\CommentReactionResource;
+use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -56,8 +60,16 @@ class CommentController extends Controller
     // }
     public function index()
     {
-        return Comment::paginate(20);
+        // return Comment::paginate(20);
+        // $comments = Comment::with('reactions')->paginate(20);
+        // Convert to JSON to make sure all accessors like "comments" are applied
+        // return response()->json($comments);
+
+
+         return CommentResource::collection(
+        Comment::with('reactions')->paginate(20) );
     }
+
 
 
     /**
@@ -211,6 +223,4 @@ class CommentController extends Controller
         $comment->delete();
         return response()->json(null, 200);
     }
-
-    
 }
