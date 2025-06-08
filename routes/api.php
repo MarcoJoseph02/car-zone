@@ -14,6 +14,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\APIs\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentReactionController;
+use App\Http\Controllers\ContactController;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -125,3 +126,5 @@ Route::post('/comments', [CommentController::class, 'store']); // Create comment
 // Route::delete('/comments/{comment}/reaction', [CommentReactionController::class, 'destroy']); // ❌ Remove reaction
 
 Route::resource('commentReactions', CommentReactionController::class);
+
+Route::post('/contact', [ContactController::class, 'send']);
