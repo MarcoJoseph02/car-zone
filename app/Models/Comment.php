@@ -14,11 +14,19 @@ class Comment extends Model
 
     public function getReactionsSummaryAttribute()
     {
-        return DB::table('comment_reactions')
+        $data = DB::table('comment_reactions')
             ->select('type', DB::raw('count(*) as total'))
             ->where('comment_id', $this->id)
             ->groupBy('type')
-            ->pluck('total', 'type');
+            ->get();
+
+        $result = [];
+
+        foreach ($data as $reaction) {
+            $result[$reaction->type] = $reaction->total;
+        }
+
+        return (object) $result;
     }
 
     protected $fillable = [
