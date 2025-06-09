@@ -39,11 +39,23 @@
                             </tr>
                             <tr>
                                 <th>is_booked</th>
-                                <td>{{ $car->is_booked  }}</td>
+                                <td>{{ $car->is_booked }}</td>
                             </tr>
+                            @if ($car->is_booked == 1 )
+                                <tr>
+                                    <th>Booked By</th>
+                                    {{-- <td>{{ $latestBooking->user->email ?? 'Unknown' }}</td> --}}
+                                    <td>{{ $userEmail  }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Deposit Amount</th>
+                                    {{-- <td>${{ number_format($latestBooking->deposit_amount, 2) }}</td> --}}
+                                    <td> {{  number_format($depositAmount, 2) }}
+                                </tr>
+                            @endif
                             <tr>
                                 <th>is_sold</th>
-                                <td>{{ $car->is_sold  }}</td>
+                                <td>{{ $car->is_sold }}</td>
                             </tr>
                             <tr>
                                 <th>Price</th>
@@ -66,32 +78,32 @@
                                 <td>{{ $car->top_speed }} km/h</td>
                             </tr>
                             <tr>
-                            @php $media = $car->getFirstMedia("mainImage");//more than 1 image (array)
-                            $url = $car->getFirstMediaUrl("mainImage");
-                            //dd($url);
-                            @endphp
+                                @php$media = $car->getFirstMedia('mainImage'); //more than 1 image (array)
+                                    $url = $car->getFirstMediaUrl('mainImage');
+                                    //dd($url);
+                                @endphp
                                 <th>Main Image</th>
                                 <td>
                                     <img src="{{ $media->getUrl() }}" alt="" width="100">
                                 </td>
                             </tr>
                             <tr>
-                            @php
-                            $mediaItems = $car->getMedia("gallery");
-                            $url = $car->getFirstMediaUrl("gallery");
-                            //dd($car, $mediaItems, $url);
-                            //dd($mediaItems);
-                            //dd($url);
-                            @endphp
+                                @php
+                                    $mediaItems = $car->getMedia('gallery');
+                                    $url = $car->getFirstMediaUrl('gallery');
+                                    //dd($car, $mediaItems, $url);
+                                    //dd($mediaItems);
+                                    //dd($url);
+                                @endphp
                                 @foreach ($mediaItems as $image)
-                                <tr>
-                                    <th>gallery</th>
-                                    <td>
-                                        <img src="{{ $image->getUrl()}}" alt="" width="100">
-                                        {{-- dd($image->getUrl()); --}}
-                                    </td>                                     
-                                </tr>
-                                @endforeach
+                            <tr>
+                                <th>gallery</th>
+                                <td>
+                                    <img src="{{ $image->getUrl() }}" alt="" width="100">
+                                    {{-- dd($image->getUrl()); --}}
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

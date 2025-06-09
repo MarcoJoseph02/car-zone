@@ -198,6 +198,38 @@ class CarController extends Controller
         return redirect()->route("admin.car.index");
     }
 
+    public function cancelBookPage(Car $car)
+    {
+        $users = ModelsUser::all();
+        return view("admin.car.cancel", ['car' => $car, 'users' => $users]);
+    }
+    public function cancelBooking(Request $request, $carId)
+    {
+        $car = Car::findOrFail($carId);
+
+        $booking = Booking::where('car_id', $carId)
+            ->whereNull('cancelled_at')
+            ->with('user') // eager load user
+            ->latest()
+            ->first();
+
+        if (!$booking) {
+            flash()->warning('No active booking found for this car.');
+            return redirect()->back();
+        }
+
+        $userEmail = $booking->user->email ?? 'Unknown';
+
+        $booking->cancelled_at = now();
+        $booking->status = 'Cancelled';
+        $booking->save();
+
+        $car->is_booked = false;
+        $car->save();
+
+        flash()->success("Booking cancelled successfully. User: $userEmail");
+        return redirect()->route('admin.car.index');
+    }
 
 
     /**
@@ -208,11 +240,25 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        // $carId = Car::findOrFail($car)->id;
-        return view("admin.car.view", compact('car'));
-        // return redirect()->route("admin.car.view",['car'=> $id]);
+        // $userEmail = Booking::where('user_id', $user->id)->whereNull('cancelled_at')->with('user')->latest()->first();
+        // if  ($userEmail) {
+        //     $userEmail = $userEmail->user->email;
+        // }
+        // $deposit = Booking::where('car_id', $car->id)->whereNull('cancelled_at')->with('user')->latest()->first();
 
-        // return new CarResource($car);
+        // return view("admin.car.view", compact('car', 'userEmail'));
+        // return redirect()->route("admin.car.view",['car'=> $id]);
+        $latestBooking = Booking::where('car_id', $car->id)
+            ->whereNull('cancelled_at')
+            ->with('user') // eager load user to get email
+            ->latest()
+            ->first();
+
+        // Extract data safely
+        $userEmail = $latestBooking?->user?->email ?? null;
+        $depositAmount = $latestBooking?->deposit_amount ?? null;
+
+        return view("admin.car.view", compact('car', 'userEmail', 'depositAmount'));
     }
 
 
@@ -235,15 +281,9 @@ class CarController extends Controller
             $car->addMedia($request->file('main'))->toMediaCollection('mainImage');
         }
 
-        // if ($request->hasFile('gallery')) { //name = images
-
-        //     foreach ($request->file('gallery') as $image) {
-        //         $car->addMedia($image)->toMediaCollection('gallery');
-        //     }
-        // }
-        if ($request->hasFile('gallery')) {         
-            $car->clearMediaCollection('gallery'); 
-            foreach ($request->file('gallery') as $image) { 
+        if ($request->hasFile('gallery')) {
+            $car->clearMediaCollection('gallery');
+            foreach ($request->file('gallery') as $image) {
                 $car->addMedia($image)->toMediaCollection('gallery');
             }
         }

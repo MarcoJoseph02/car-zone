@@ -46,6 +46,8 @@ class CarResource extends JsonResource
                 return $item->getFullUrl();
             }),
 
+            'deposit_amount' => $this->price/10,
+
         ];
     }
 }

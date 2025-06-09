@@ -41,20 +41,21 @@ Route::get('/store', function () {
 
 
 Route::group(
-    [ "as" => "admin."] , function(){
-        Route::resource("/users" , UserController::class);
-        Route::resource("/category" , CategoryController::class);
-        Route::resource("/brand" , BrandController::class);
-        Route::resource("/branch" , BranchController::class);
-        Route::resource("/supplier" , SupplierController::class);
-        Route::resource("/car" , CarController::class);
+    ["as" => "admin."],
+    function () {
+        Route::resource("/users", UserController::class);
+        Route::resource("/category", CategoryController::class);
+        Route::resource("/brand", BrandController::class);
+        Route::resource("/branch", BranchController::class);
+        Route::resource("/supplier", SupplierController::class);
+        Route::resource("/car", CarController::class);
         Route::get('/cars/{car}/book', [CarController::class, 'getBookPage'])->name('car.getBookPage');
         Route::post('/car/{car}/book', [CarController::class, 'processBook'])->name('car.processBook');
         Route::get('/cars/{car}/sell', [CarController::class, 'getSellPage'])->name('car.getSellPage');
         Route::post('/car/{car}/sell', [CarController::class, 'processSell'])->name('car.processSell');
-        
-Route::put('/brand/{brand}', [BrandController::class, 'update'])->name('admin.brand.update');
-});
 
-
-
+        Route::put('/brand/{brand}', [BrandController::class, 'update'])->name('admin.brand.update');
+        Route::get('/cars/{car}/cancel-booking', [CarController::class, 'cancelBooking'])
+            ->name('car.cancel-booking');
+    }
+);
