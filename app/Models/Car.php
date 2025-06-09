@@ -70,4 +70,9 @@ class Car extends Model implements HasMedia
     {
         return $this->belongsTo(Booking::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

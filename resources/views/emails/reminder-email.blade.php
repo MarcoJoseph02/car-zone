@@ -38,7 +38,7 @@ Thanks,
     <p>Please schedule an appointment to ensure your car runs smoothly.</p>
     <p>Best regards, <br> Your Car Maintenance Team</p> --}}
     <p>This is a reminder for the upcoming maintenance of your car's part: {{ $part_name }}.</p>
-    <p>The next maintenance is due on: {{ $next_reminder_date->format('Y-m-d') }}.</p>
+    <p>The next maintenance is due on: {{ $next_reminder_date }}.</p>
     <p>Please make sure to schedule the maintenance at your earliest convenience.</p>
     <p>Thank you for choosing us!</p>
 </body>

@@ -15,6 +15,7 @@ use App\Notifications\BookingCancelled;
 use Stripe\PaymentIntent;
 use Stripe\Refund;
 
+
 class BookingController extends Controller
 {
 
@@ -65,7 +66,8 @@ class BookingController extends Controller
             ]);
 
             $car->update(['is_available' => false]);
-            $this->setMaintenanceReminders($car);
+            
+            
 
             return response()->json([
                 'message' => 'Booking created. Payment required.',
@@ -214,7 +216,7 @@ class BookingController extends Controller
         $user = User::find(auth()->id());
         $user->notify(new BookingCancelled($booking));
 
-       
+
 
 
         return response()->json([
@@ -332,5 +334,71 @@ class BookingController extends Controller
         if ($hours <= 24) return "Cancel now for 100% refund";
         if ($hours <= 72) return "Cancel now for 8% refund (2% fee)";
         return "No refund - more than 72 hours passed";
+    }
+
+
+    public function processBooking(Request $request, $carId)
+    {
+        $car = Car::findOrFail($carId);
+
+        if ($car->is_booked || !$car->is_available) {
+            return response()->json(['message' => 'Car is not available for booking.'], 400);
+        }
+
+        $depositAmount = round($car->price * 0.10, 2);
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $paymentIntent = PaymentIntent::create([
+            'amount' => intval($depositAmount * 100), // in cents
+            'currency' => 'egp',
+            'capture_method' => 'manual',
+            'metadata' => [
+                'car_id' => $car->id,
+                'user_id' => auth()->id(),
+            ],
+        ]);
+
+        $booking = Booking::create([
+            'user_id' => auth()->id(),
+            'car_id' => $car->id,
+            'deposit_amount' => $depositAmount,
+            'payment_intent_id' => $paymentIntent->id,
+            'status' => 'pending_payment',
+            'starts_at' => now(),
+            'ends_at' => now()->addDays(3),
+        ]);
+
+        $car->update(['is_available' => false]);
+
+        // Reminder setup if needed
+        $this->setMaintenanceReminders($car);
+
+        return response()->json([
+            'message' => 'Booking created. Payment required.',
+            'clientSecret' => $paymentIntent->client_secret,
+            'booking_id' => $booking->id,
+            'deposit_amount' => $depositAmount,
+        ], 201);
+    }
+
+    public function capturePayment(Request $request)
+    {
+        $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
+        ]);
+
+        $booking = Booking::where('id', $request->booking_id)
+            ->whereNotNull('payment_intent_id')
+            ->firstOrFail();
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $intent = PaymentIntent::retrieve($booking->payment_intent_id);
+
+        $intent->capture(); // this is where money is pulled from card
+
+        $booking->update(['status' => 'Booked']);
+        return response()->json(['message' => 'Payment captured & booking confirmed.']);
     }
 }

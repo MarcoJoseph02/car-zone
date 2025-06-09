@@ -26,15 +26,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('process:deposits')->hourly();
-        
+
         $schedule->call('App\Http\Controllers\ReminderController@sendMaintenanceReminder')
-             ->daily();
+            ->daily();
         // $schedule->job(new CheckRemindersJob)->daily();
 
         // $schedule->command('inspire')->hourly();
         // $schedule->job(new CheckRemindersJob)->daily();
 
-       // Check and expire unpaid bookings every 30 minutes
+        // Check and expire unpaid bookings every 30 minutes
 
         $schedule->call(function () {
             $expired = Booking::where('status', 'pending_payment')
@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
                     // Free up the car
                     Car::where('id', $booking->car_id)
                         ->update(['is_available' => true]);
-                        
+
                     // Mark booking as expired
                     $booking->update([
                         'status' => 'expired',
@@ -55,21 +55,24 @@ class Kernel extends ConsoleKernel
                 }
             });
         })->everyThirtyMinutes();
-        
+
         // Send maintenance reminder emails
         $schedule->call(function () {
+
             $reminders = Reminder::whereDate('next_reminder_date', now()->toDateString())
                 ->where('notified', false)
                 ->get();
-    
+
+            //dd($reminders);
+
             foreach ($reminders as $reminder) {
                 //Mail::to($reminder->email)->send(new  \App\Mail\MaintenanceReminderMail($reminder
                 SupportFacadesMail::to($reminder->email)->send(new \App\Mail\MaintenanceReminderMail($reminder));
-    
+                
                 // Mark as notified
                 $reminder->update(['notified' => true]);
             }
-        })->dailyAt('08:00'); // Send emails every day at 8 AM
+        })->everyMinute(); // Send emails every day at 8 AM
 
     }
 
@@ -81,7 +84,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
         require base_path('routes/console.php');
     }
 }

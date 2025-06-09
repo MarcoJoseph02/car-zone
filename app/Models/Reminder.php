@@ -56,4 +56,9 @@ class Reminder extends Model
         $intervals = self::getFixedIntervals();
         return $intervals[$part_name] ?? 6; // Default: 6 months
     }
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
+    
 }

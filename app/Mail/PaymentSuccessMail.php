@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Reminder;
+use App\Models\Booking;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,20 +10,37 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class MaintenanceReminderMail extends Mailable
+class PaymentSuccessMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $reminder;
+    protected $booking;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($reminder)
+    public function __construct(Booking $booking)
     {
-        $this->reminder = $reminder;
+        $this->booking = $booking;
     }
+
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->subject('Payment Successful Confirmation')
+            ->to($this->booking->user->email)
+            ->view('emails.payment_success')
+            ->with([
+                'booking' => $this->booking,
+            ]);
+    }
+
 
     /**
      * Get the message envelope.
@@ -33,7 +50,7 @@ class MaintenanceReminderMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Maintenance Reminder Mail',
+            subject: 'Payment Success Mail',
         );
     }
 
@@ -45,22 +62,9 @@ class MaintenanceReminderMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.reminder-email',
+            view: 'emails.payment_success',
         );
     }
-    public function build()
-    {
-        return $this->subject('Car Maintenance Reminder')
-            ->to($this->reminder->car->user->email)
-            ->view('emails.reminder-email')
-            ->with([
-                'reminder' => $this->reminder,
-                'car' => $this->reminder->car,
-                'part_name' => $this->reminder->part_name,
-                'next_reminder_date' => $this->reminder->next_reminder_date,
-            ]);
-    }
-
 
     /**
      * Get the attachments for the message.

@@ -22,7 +22,7 @@ use Nette\Utils\Json;
 class CarController extends Controller
 {
 
-   
+
     /**
      * Display a listing of the resource.
      *
@@ -43,13 +43,13 @@ class CarController extends Controller
     public function store(CreateCarRequest $request)
     {
         //
-       
+
         $data = $request->validated();
         $car = Car::create($data);
-        return new CarResource($car); 
+        return new CarResource($car);
     }
-    
-    
+
+
     /**
      * Display the specified resource.
      *
@@ -63,7 +63,7 @@ class CarController extends Controller
 
 
 
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -79,12 +79,12 @@ class CarController extends Controller
     }
 
     /**
-      * Update the specified resource in storage.
-      *
-      * @param  \Illuminate\Http\Request  $request
-      * @param  \App\Models\Car  $car
-      * @return \Illuminate\Http\Response
-      */
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Car  $car
+     * @return \Illuminate\Http\Response
+     */
     public function update(UpdateCarRequest $request, Car $car)
     {
         $data = $request->validated();
@@ -102,8 +102,13 @@ class CarController extends Controller
             'car_id' => $carId,
             'deposit_amount' => $request->amount,
             'status' => 'Booked',
+            'starts_at' => Carbon::now(),
+            'ends_at' => now()->addDays(3),
         ]);
         flash()->success("Booked Succefully");
         return response()->json($booking);
     }
+    
 }
+
+

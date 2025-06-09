@@ -151,17 +151,8 @@ class CarController extends Controller
         $soldDate = Carbon::now();
 
         // Loop over all parts and set maintenance reminders based on selling date
-        $reminders = Reminder::where('car_id', $carId)->get();
-        foreach ($reminders as $reminder) {
-            // Get the interval from the reminder
-            $nextInterval = $reminder->maintenance_interval;
-
-            // Update the reminder with the new maintenance date
-            $reminder->update([
-                'next_reminder_date' => $soldDate->addMonths($nextInterval),
-                'notified' => false
-            ]);
-        }
+        
+        $this->setMaintenanceReminders($car, $soldDate);
 
         flash()->success("Car sold and maintenance reminders updated.");
         return redirect()->route("admin.car.index");
@@ -328,5 +319,58 @@ class CarController extends Controller
             "brands" => Brand::pluck('name', 'id'),
             "categories" => Category::pluck('type', 'id'),
         ];
+    }
+
+    public function setMaintenanceReminders(Car $car)
+    {
+        // Define fixed intervals and units for maintenance parts
+        $maintenanceParts = [
+            'for_me' => [
+                'interval' => 1, // 1 min
+                'unit' => 'minute', // Specify the unit as 'minute'
+            ],
+            'Oil Filter' => [
+                'interval' => 3, // 3 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Brake Pads' => [
+                'interval' => 12, // 12 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Tires' => [
+                'interval' => 6, // 6 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Air Filter' => [
+                'interval' => 6, // 6 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+            'Battery' => [
+                'interval' => 12, // 12 months
+                'unit' => 'month', // Specify the unit as 'month'
+            ],
+        ];
+
+        // Loop through each maintenance part and set reminder
+        foreach ($maintenanceParts as $partName => $data) {
+            $interval = $data['interval'];
+            $unit = $data['unit'];
+
+            // Determine the next reminder date based on the unit
+            if ($unit === 'minute') {
+                $nextReminderDate = Carbon::now()->addMinutes($interval);
+            } elseif ($unit === 'month') {
+                $nextReminderDate = Carbon::now()->addMonths($interval);
+            }
+
+            Reminder::create([
+                'car_id' => $car->id,
+                'part_name' => $partName,
+                'maintenance_interval' => $interval,
+                'next_reminder_date' => $nextReminderDate,
+                'reminder_type' => 'time', // You can adjust this to 'usage' or 'condition' based on your needs
+                'notified' => false,
+            ]);
+        }
     }
 }

@@ -41,16 +41,16 @@
                                 <th>is_booked</th>
                                 <td>{{ $car->is_booked }}</td>
                             </tr>
-                            @if ($car->is_booked == 1 )
+                            @if ($car->is_booked == 1)
                                 <tr>
                                     <th>Booked By</th>
                                     {{-- <td>{{ $latestBooking->user->email ?? 'Unknown' }}</td> --}}
-                                    <td>{{ $userEmail  }}</td>
+                                    <td>{{ $userEmail }}</td>
                                 </tr>
                                 <tr>
                                     <th>Deposit Amount</th>
                                     {{-- <td>${{ number_format($latestBooking->deposit_amount, 2) }}</td> --}}
-                                    <td> {{  number_format($depositAmount, 2) }}
+                                    <td> {{ number_format($depositAmount, 2) }}
                                 </tr>
                             @endif
                             <tr>
@@ -78,13 +78,14 @@
                                 <td>{{ $car->top_speed }} km/h</td>
                             </tr>
                             <tr>
-                                @php$media = $car->getFirstMedia('mainImage'); //more than 1 image (array)
+                                @php
+                                    $media = $car->getFirstMedia('mainImage'); //more than 1 image (array)
                                     $url = $car->getFirstMediaUrl('mainImage');
-                                    //dd($url);
+                                    //dd($media);
                                 @endphp
                                 <th>Main Image</th>
                                 <td>
-                                    <img src="{{ $media->getUrl() }}" alt="" width="100">
+                                    <img src="{{ $media?->getUrl() }}" alt="" width="100">
                                 </td>
                             </tr>
                             <tr>

@@ -11,9 +11,11 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use App\Models\Reminder as ReminderModel;
 use App\Jobs\Mail;
+use App\Mail\MaintenanceReminderMail;
 use App\Mail\ReminderEmail;
 use Illuminate\Support\Facades\Mail as FacadesMail;
 use Illuminate\Contracts\Mail\Mailable;
+
 
 class CheckRemindersJob implements ShouldQueue
 {
@@ -36,7 +38,7 @@ class CheckRemindersJob implements ShouldQueue
         })->where('notified', false)->get();
 
         foreach ($reminders as $reminder) {
-            FacadesMail::to($reminder->car->user->email)->send(new ReminderEmail($reminder));//ReminderEmail
+            FacadesMail::to($reminder->car->user->email)->send(new MaintenanceReminderMail($reminder));//ReminderEmail
             $reminder->update(['notified' => true]);
         }
     }
