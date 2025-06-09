@@ -13,9 +13,11 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\User;
+use App\Models\Booking;
 use App\Models\Reminder;
 use App\Models\User as ModelsUser;
 use Carbon\Carbon;
+use Nette\Utils\Json;
 
 class CarController extends Controller
 {
@@ -88,5 +90,20 @@ class CarController extends Controller
         $data = $request->validated();
         $car->update($data);
         return new CarResource($car);
+    }
+
+    public function processBook(Request $request, $carId)
+    {
+        $car = Car::findOrFail($carId);
+        $car->is_booked = true;
+        $car->save();
+        $booking = Booking::create([
+            'user_id' => $request->user_id,
+            'car_id' => $carId,
+            'deposit_amount' => $request->amount,
+            'status' => 'Booked',
+        ]);
+        flash()->success("Booked Succefully");
+        return response()->json($booking);
     }
 }

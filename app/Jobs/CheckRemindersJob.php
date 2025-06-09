@@ -13,6 +13,7 @@ use App\Models\Reminder as ReminderModel;
 use App\Jobs\Mail;
 use App\Mail\ReminderEmail;
 use Illuminate\Support\Facades\Mail as FacadesMail;
+use Illuminate\Contracts\Mail\Mailable;
 
 class CheckRemindersJob implements ShouldQueue
 {

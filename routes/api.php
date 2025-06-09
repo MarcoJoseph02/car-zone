@@ -128,3 +128,4 @@ Route::post('/comments', [CommentController::class, 'store']); // Create comment
 Route::resource('commentReactions', CommentReactionController::class);
 
 Route::post('/contact', [ContactController::class, 'send']);
+Route::post('/book/{carId}', [CarController::class, 'processBook']);
