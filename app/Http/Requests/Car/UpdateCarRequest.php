@@ -38,6 +38,7 @@ class UpdateCarRequest extends FormRequest
             'features'=>['required','min:10'],
             'performance'=>['required','min:10'],
             'safety'=>['required','min:10'],
+            'is_booked'=>[''],
            
         ];
     }
