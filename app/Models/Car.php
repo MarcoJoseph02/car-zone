@@ -75,4 +75,8 @@ class Car extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
+    public function booking_user()
+    {
+        return $this->hasOne(Booking::class, 'car_id')->where('status', 'Booked');
+    }
 }

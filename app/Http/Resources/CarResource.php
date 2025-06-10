@@ -25,6 +25,7 @@ class CarResource extends JsonResource
             'user_id' => $this->user_id,
             'is_sold' => $this->is_sold,
             'is_booked' => $this->is_booked,
+            'booking_user' =>UserResource::make($this->booking_user?->user),
             'price' => $this->price,
             'doors' => $this->doors,
             'acceleration' => $this->acceleration,

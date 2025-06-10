@@ -59,7 +59,6 @@ return new class extends Migration
             
             // Indexes
             $table->index('status');
-            $table->unique(['car_id', 'status'])->where('status', 'active');
         });
     }
 
