@@ -108,7 +108,15 @@ class CarController extends Controller
         flash()->success("Booked Succefully");
         return response()->json($booking);
     }
-    
+
+    public function soldCarsWithBuyers()
+    {
+        $soldCars = Car::where('is_sold', true)
+            ->with('user:id,name,email') // assuming each car belongs to a user
+            ->get(['id', 'model', 'year', 'price', 'user_id']);
+
+        return response()->json([
+            'sold_cars' => $soldCars
+        ]);
+    }
 }
-
-

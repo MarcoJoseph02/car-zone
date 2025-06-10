@@ -131,3 +131,6 @@ Route::post('/contact', [ContactController::class, 'send']);
 Route::post('/book/{carId}', [CarController::class, 'processBook']);//manual book by postman 
 
 Route::post('/capture-payment', [BookingController::class, 'capturePayment']);
+
+Route::get('/cars/sold', [CarController::class, 'soldCarsWithBuyers']);
+
