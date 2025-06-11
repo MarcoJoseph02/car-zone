@@ -45,7 +45,7 @@ class CommentReactionController extends Controller
         $request->validate([
             'user_id' => 'required|integer',
             'comment_id' => 'required|integer',
-            'type' => 'required|string|in:like,love,haha,angry', // limit allowed types
+            'type' => 'required|string|in:like,love,haha,sad,angry', // limit allowed types
         ]);
 
         $comment = Comment::findOrFail($request->comment_id);
