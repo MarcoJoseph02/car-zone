@@ -159,7 +159,7 @@
                             <tbody>
                                 @foreach ($rows as $row)
                                     <tr class="text-center">
-                                        <td>{{ $row->supplier->lname ?? 'N/A' }}</td>
+                                        <td>{{ $row->supplier->fname ?? 'N/A' }}</td>
                                         <td>{{ $row->model ?? 'N/A' }}</td>
                                         <td>{{ $row->year ?? 'N/A' }}</td>
                                         <td>{{ number_format($row->price, 2) }}</td>

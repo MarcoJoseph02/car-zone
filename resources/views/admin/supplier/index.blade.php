@@ -29,7 +29,7 @@
                             <tbody>
                             @foreach($rows as $row)
                                 <tr class="text-center">
-                                    <td>{{ $row->fname . $row->lname }}</td>
+                                    <td>{{ $row->fname ." ". $row->lname }}</td>
                                     <td>{{ $row->phone_no }}</td>
                                     <td>{{ $row->address }}</td>
                                     <td class="align-middle text-center pt-5">
