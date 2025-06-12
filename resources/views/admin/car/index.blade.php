@@ -192,13 +192,13 @@
                                                     <i class="fas fa-car"></i> <!-- Changed icon -->
                                                 </a>
                                                 @endif
-                                                @if(! $row->is_booked)
+                                                @if(! $row->is_booked && !$row->is_sold)
                                                 <a class="btn btn-xs btn-info me-1"
                                                     href="{{ route('admin.car.getBookPage', $row->id) }}" title="Book">
                                                     <i class="fas fa-book"></i> <!-- Changed icon -->
                                                 </a>
                                                 @endif
-                                                @if( $row->is_booked)
+                                                @if( $row->is_booked && !$row->is_sold)
                                                 <a class="btn btn-xs btn-info me-1"
                                                     href="{{ route('admin.car.cancel-booking', $row->id) }}" title="Cancel Book">
                                                     <i class="fas fa-ban"></i> <!-- Changed icon -->
