@@ -12,11 +12,12 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\User;
+use App\Mail\BookingDepositPaid;
 use App\Models\Booking;
 use App\Models\Reminder;
 use App\Models\User as ModelsUser;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Mail;
 
 class CarController extends Controller
 {
@@ -185,6 +186,8 @@ class CarController extends Controller
             'deposit_amount' => $request->amount,
             'status' => 'Booked',
         ]);
+        Mail::to($booking->user->email)->send(new BookingDepositPaid($booking));//-----------------------------------------------------------------
+
         flash()->success("Booked Succefully");
         return redirect()->route("admin.car.index");
     }
