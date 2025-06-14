@@ -13,10 +13,12 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\User;
+use App\Mail\BookingDepositPaid;
 use App\Models\Booking;
 use App\Models\Reminder;
 use App\Models\User as ModelsUser;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Nette\Utils\Json;
 
 class CarController extends Controller
@@ -105,6 +107,9 @@ class CarController extends Controller
             'starts_at' => Carbon::now(),
             'ends_at' => now()->addDays(3),
         ]);
+        
+        Mail::to($booking->user->email)->send(new BookingDepositPaid($booking));//-----------------------------------------------------------------
+
         flash()->success("Booked Succefully");
         return response()->json($booking);
     }
