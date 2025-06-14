@@ -314,7 +314,7 @@ class CarController extends Controller
     private function getLookup()
     {
         return [
-            "suppliers" => Supplier::pluck('lname', 'id'),
+            "suppliers" => Supplier::pluck('fname', 'id'),
             "branches" => Branch::pluck('name', 'id'),
             "brands" => Brand::pluck('name', 'id'),
             "categories" => Category::pluck('type', 'id'),
