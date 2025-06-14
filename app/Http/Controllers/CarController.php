@@ -151,7 +151,7 @@ class CarController extends Controller
         $soldDate = Carbon::now();
 
         // Loop over all parts and set maintenance reminders based on selling date
-        
+
         $this->setMaintenanceReminders($car, $soldDate);
 
         flash()->success("Car sold and maintenance reminders updated.");
@@ -176,6 +176,10 @@ class CarController extends Controller
 
     public function processBook(Request $request, $carId)
     {
+        if ($request->amount < 100) {
+            flash()->error("Deposit amount must be at least 100.");
+            return back();
+        }
         $car = Car::findOrFail($carId);
         $car->is_booked = true;
         $car->save();
