@@ -63,12 +63,12 @@ class Kernel extends ConsoleKernel
                 ->where('notified', false)
                 ->get();
 
-            //dd($reminders);
+            // dd($reminders);
 
             foreach ($reminders as $reminder) {
                 //Mail::to($reminder->email)->send(new  \App\Mail\MaintenanceReminderMail($reminder
                 SupportFacadesMail::to($reminder->email)->send(new \App\Mail\MaintenanceReminderMail($reminder));
-                
+                echo "Email sent to " . $reminder->email . " for car " . $reminder->car->name . " on " . now()->toDateString() . "\n";
                 // Mark as notified
                 $reminder->update(['notified' => true]);
             }
