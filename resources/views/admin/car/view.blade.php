@@ -56,6 +56,13 @@
                             <tr>
                                 <th>is_sold</th>
                                 <td>{{ $car->is_sold }}</td>
+                            @if ($car->is_sold == 1)
+                                <tr>
+                                    <th>Car Owner</th>
+                                    <td>{{ $car->user->email }}</td>
+                                </tr>
+                                
+                            @endif
                             </tr>
                             <tr>
                                 <th>Price</th>
