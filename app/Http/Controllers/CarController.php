@@ -176,6 +176,10 @@ class CarController extends Controller
 
     public function processBook(Request $request, $carId)
     {
+        if ($request->amount < 100) {
+            flash()->error("Deposit amount must be at least 100.");
+            return back();
+        }
         $car = Car::findOrFail($carId);
         $car->is_booked = true;
         $car->save();
